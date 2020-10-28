@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
+@import "./variable";
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+html {
+  font-size: 10px;
+  font-family: $main-font;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: overlay;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  width: 100%;
+}
+
+section {
+  padding: $padding--desktop;
+  @media screen and(max-width: 960px) {
+    padding: $padding--mobile;
+  }
+}
+
+.container {
+  max-width: 122rem;
+  width: 100%;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.spacing-vertical-l > * + * {
+  margin-top: 1.6rem;
+  @media screen and (max-width: 960px) {
+    margin-top: 0.6rem;
+  }
+}
+
+.spacing-vertical-m > * + * {
+  margin-top: 1rem;
+  @media screen and (max-width: 960px) {
+    margin-top: 0.3rem;
+  }
+}
+
+.spacing-horizontal-l > * + * {
+  margin-left: 1.6rem;
+  @media screen and (max-width: 960px) {
+    margin-left: 0.6rem;
+  }
+}
+
+.spacing-horizontal-m > * + * {
+  margin-left: 1rem;
+  @media screen and (max-width: 960px) {
+    margin-left: 0.3rem;
+  }
+}
+
+.btn {
+  font-family: $main-font;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.18s $transition--timing,
+    opacity 0.23s $transition--timing;
+  &:hover,
+  &:active {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+.btn-disable {
+  cursor: not-allowed !important;
+  &:hover,
+  &:active {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// NO SELECT GLOBAL CLASS
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+ul {
+  list-style: none;
+}
