@@ -1,8 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Card, CardContent, Container } from '@material-ui/core';
+
 import { MainLayout } from "../../layouts";
 import { authApi, boardApi } from "../../apis";
-import { map } from "lodash";
+import { isEmpty, map } from "lodash";
+import CustomCard from "./components/Card";
+import './styles.scss';
+
+const _renderBoard = (data) => {
+  if (data.length) {
+    const formatData = (data) => {
+      if (!isEmpty(data)) {
+        return {
+          name: data.name,
+          createdBy: data.createdBy.username
+        }
+      } else return null
+    }
+    return (
+      <div className="board">
+        {map(data, (item, idx) => <div key={idx} className='item'><CustomCard data={formatData(item)} /></div>)}
+      </div>
+    )
+  } else return null
+}
 
 const HomePage = (props) => {
   const [boards, setBoards] = React.useState([]);
@@ -27,7 +49,9 @@ const HomePage = (props) => {
   }, []);
   return (
     <MainLayout>
-      <div>{boards.length && map(boards, (item) => <p>{item.name}</p>)}</div>
+      <div className="HomePage">
+        <Container maxWidth="lg">{_renderBoard(boards)}</Container>
+      </div>
     </MainLayout>
   );
 };
