@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./styles.scss";
 
 const MainLayout = ({ children }) => {
-  return <section>{children}</section>;
+  return <div>{children}</div>;
 };
 
 MainLayout.propTypes = {};
