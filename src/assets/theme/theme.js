@@ -1,14 +1,14 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { red, blue, indigo, lightGreen } from '@material-ui/core/colors';
+import { red, blue, indigo, lightGreen, lightBlue } from '@material-ui/core/colors';
 
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: blue[600],
+      main: blue[200],
     },
     secondary: {
-      main: indigo[600],
+      main: lightBlue[500],
     },
     error: {
       main: red[800],
@@ -28,15 +28,19 @@ const theme = createMuiTheme({
     fontSize: 10,
     h1: {
       fontWeight: 700,
+      fontFamily: `'Poppins', sans-serif;`,
     },
     h2: {
       fontWeight: 700,
+      fontFamily: `'Poppins', sans-serif;`,
     },
     h3: {
       fontWeight: 700,
+      fontFamily: `'Poppins', sans-serif;`,
     },
     h4: {
       fontWeight: 700,
+      fontFamily: `'Poppins', sans-serif;`,
     },
     body1: {
       fontSize: 16,

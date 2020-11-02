@@ -1,0 +1,63 @@
+@import '../../assets/styles/variable';
+
+.Drawer {
+  position: fixed;
+  max-width: 15vw;
+  width: 100%;
+  top: 15%;
+  left: 0;
+  bottom: 15%;
+  z-index: 100;
+  background-color: #424242;
+  box-shadow: 5px 5px 25px -5px #808080;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  transform: translateX(-100%);
+  transition: transform 0.2s $transition--timing;
+  .close-icon-container {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 5%;
+    width: 35px;
+    height: 70px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #424242;
+    transform: translateX(100%);
+    display: grid;
+    place-items: center;
+    opacity: 1;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px -5px #aaa;
+    .close-icon {
+      color: #fff;
+      font-size: 2.6rem;
+      transition: transform 0.3s ease;
+    }
+  }
+  .list-item {
+    height: 100%;
+    @include flex($dir: column, $justify: flex-start, $align: none);
+    .item {
+      color: #fff;
+      font-size: 1.6rem;
+      padding: 1.4rem 2rem;
+      cursor: pointer;
+      transition: background 0.1s ease;
+
+      &:hover {
+        background-color: #808080;
+      }
+    }
+  }
+}
+
+.open {
+  transform: translateX(0%);
+  .close-icon-container {
+    .close-icon {
+      transform: rotate(-180deg);
+    }
+  }
+}

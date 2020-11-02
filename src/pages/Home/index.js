@@ -7,6 +7,9 @@ import { authApi, boardApi } from "../../apis";
 import { isEmpty, map } from "lodash";
 import CustomCard from "./components/Card";
 import './styles.scss';
+import { connect } from "react-redux";
+import { MyAppBar } from "../../components";
+import Drawer from "../../components/Drawer";
 
 const _renderBoard = (data) => {
   if (data.length) {
@@ -50,12 +53,22 @@ const HomePage = (props) => {
   return (
     <MainLayout>
       <div className="HomePage">
+        <Drawer />
+        <MyAppBar />
         <Container maxWidth="lg">{_renderBoard(boards)}</Container>
       </div>
     </MainLayout>
   );
 };
 
-HomePage.propTypes = {};
+const mapStateToProps = state => ({
 
-export default HomePage;
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomePage);
