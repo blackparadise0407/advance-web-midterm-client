@@ -1,8 +1,8 @@
-@import '../../assets/styles/variable';
+@import "../../assets/styles/variable";
 
 .Drawer {
   position: fixed;
-  max-width: 15vw;
+  max-width: 22rem;
   width: 100%;
   top: 15%;
   left: 0;
@@ -14,8 +14,11 @@
   border-bottom-right-radius: 7px;
   transform: translateX(-100%);
   transition: transform 0.2s $transition--timing;
+  @media screen and (max-width: 900px) {
+    max-width: 18rem;
+  }
   .close-icon-container {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 5%;
@@ -45,7 +48,9 @@
       padding: 1.4rem 2rem;
       cursor: pointer;
       transition: background 0.1s ease;
-
+      @media screen and (max-width: 900px) {
+        font-size: 1.4rem;
+      }
       &:hover {
         background-color: #808080;
       }

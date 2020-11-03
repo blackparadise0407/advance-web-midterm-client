@@ -1,13 +1,13 @@
 import axiosClient from "./axiosClient";
 
 const boardApi = {
-  getAll: () => {
+  getAll: (config) => {
     const url = "/board";
-    return axiosClient.get(url);
+    return axiosClient.get(url, config);
   },
-  getByID: (id) => {
+  getByID: (id, config) => {
     const url = `/board/${id}`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, config);
   },
 };
 

@@ -7,16 +7,16 @@ import {
   REGISTER_SUCCESS,
   USER_LOADED,
   USER_LOADING,
-  CLEAR_AUTH_MESSAGE
-} from '../actions/types';
+  CLEAR_AUTH_MESSAGE,
+} from "../actions/types";
 
 const initialState = {
   isLoading: false,
-  isAuthenticated: localStorage.getItem('token') !== null || false,
-  token: localStorage.getItem('token'),
+  isAuthenticated: localStorage.getItem("token") !== null || false,
+  token: localStorage.getItem("token"),
   user: null,
-  msg: '',
-}
+  msg: "",
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -24,15 +24,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
-        msg: ''
-      }
+        msg: "",
+      };
     case USER_LOADED:
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload
-      }
+        user: action.payload,
+      };
     case REGISTER_SUCCESS:
       return {
         ...state,
@@ -40,21 +40,21 @@ export default (state = initialState, action) => {
         msg: action.payload.msg,
         isLoading: false,
         isAuthenticated: false,
-      }
+      };
     case LOGIN_SUCCESS:
-      localStorage.setItem('token', action.payload.token)
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         ...action.payload,
         isAuthenticated: true,
         isLoading: false,
-        msg: action.payload.msg
-      }
+        msg: action.payload.msg,
+      };
     case REGISTER_FAIL:
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case AUTH_ERROR:
-      localStorage.removeItem('token')
+      localStorage.removeItem("token");
       return {
         ...state,
         msg: action.payload.msg,
@@ -62,12 +62,13 @@ export default (state = initialState, action) => {
         token: null,
         isLoading: false,
         isAuthenticated: false,
-      }
+      };
     case CLEAR_AUTH_MESSAGE:
       return {
         ...state,
-        msg: ''
-      }
-    default: return { ...state }
+        msg: "",
+      };
+    default:
+      return { ...state };
   }
-}
+};
