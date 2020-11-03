@@ -1,26 +1,27 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Container } from "@material-ui/core";
+import { Container, makeStyles } from "@material-ui/core";
 
 import { MainLayout } from "../../layouts";
-import { authApi, boardApi } from "../../apis";
-import { isEmpty, map } from "lodash";
-import CustomCard from "./components/Card";
-import "./styles.scss";
+import { boardApi } from "../../apis";
+
 import { connect } from "react-redux";
-import { MyAppBar } from "../../components";
-import Drawer from "../../components/Drawer";
+
 import { authActions } from "../../redux/actions";
 import tokenConfig from "../../helpers/tokenConfig";
 import { useHistory } from "react-router-dom";
 import BoardTable from "./components/BoardTable";
 
+import "./styles.scss";
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    padding: theme.spacing(1, 2)
+  }
+}))
+
 const HomePage = (props) => {
   const { loadUser, token, isAuthenticated } = props;
   const history = useHistory();
-  const [boards, setBoards] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
   const [userBoard, setUserBoard] = React.useState({
     isLoading: false,
     err: null,
@@ -35,7 +36,7 @@ const HomePage = (props) => {
         err: null,
       });
       const config = tokenConfig(token);
-      const { data, message } = await boardApi.getAll(config);
+      const { data } = await boardApi.getAll(config);
       setUserBoard({
         ...userBoard,
         isLoading: false,
@@ -55,12 +56,14 @@ const HomePage = (props) => {
     }
     loadUser();
     _fetchUserBoard();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, loadUser]);
   const { data } = userBoard;
+  const classes = useStyles()
   return (
     <MainLayout>
       <div className="HomePage">
-        <Container maxWidth="lg">
+        <Container className={classes.container} maxWidth="lg">
           <BoardTable rows={data} />
         </Container>
       </div>

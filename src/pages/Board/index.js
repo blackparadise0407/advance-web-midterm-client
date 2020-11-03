@@ -4,23 +4,32 @@ import { connect } from "react-redux";
 import { boardApi } from "../../apis";
 import tokenConfig from "../../helpers/tokenConfig";
 import { MainLayout } from "../../layouts";
-import { authActions } from "../../redux/actions";
+import { authActions, boardActions } from "../../redux/actions";
 import { map } from "lodash";
-import Column from "./components";
+import Column from "./components/Column";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "1rem",
+    padding: theme.spacing(0, 2),
   },
 }));
 
-const _renderColumn = (data = []) => {
+const _renderColumn = ({ data = [], addAction, boardId, removeAction }) => {
   if (data.length) {
     return (
       <React.Fragment>
         {map(data, (item) => (
           <Grid alignContent="center" item xs={12} sm={4}>
-            <Column boardName={item.name} actions={item.data} />
+            <Column
+              boardId={boardId}
+              field={item.field}
+              addAction={addAction}
+              removeAction={removeAction}
+              boardName={item.name}
+              actions={item.data} />
+
           </Grid>
         ))}
       </React.Fragment>
@@ -32,60 +41,40 @@ const BoardPage = (props) => {
   const {
     match: { params },
     isAuthenticated,
+    loadBoardByID,
     loadUser,
-    token,
+    addAction,
+    board,
+    removeAction
   } = props;
-  const [board, setBoard] = React.useState({
-    data: null,
-    isLoading: false,
-    err: null,
-  });
+  const history = useHistory()
 
-  const _fetchBoardById = async () => {
-    try {
-      setBoard({
-        ...board,
-        isLoading: true,
-      });
-      let config = tokenConfig(token);
-      const { data, message } = await boardApi.getByID(params.id, config);
-      setBoard({
-        ...board,
-        data,
-        isLoading: false,
-      });
-    } catch (error) {
-      setBoard({
-        ...board,
-        isLoading: false,
-        err: error.response.data.message || error,
-      });
-    }
-  };
 
   React.useEffect(() => {
+    if (!isAuthenticated) {
+      history.push('/login')
+    }
     loadUser();
-    _fetchBoardById();
-  }, []);
+    loadBoardByID(params.id);
+  }, [isAuthenticated, loadUser, history, loadBoardByID, params.id]);
 
   const _getCol = () => {
-    if (board.data) {
-      const {
-        data: { wentWell, toImprove, actionsItem },
-      } = board;
-      return [
-        { name: "Went well", data: wentWell },
-        { name: "To improve", data: toImprove },
-        { name: "Action items", data: actionsItem },
-      ];
+    if (board) {
+      if (board.data) {
+        const { data: { wentWell, toImprove, actionsItem } } = board
+        return [
+          { name: "Went well", field: 'wentWell', data: wentWell },
+          { name: "To improve", field: 'toImprove', data: toImprove },
+          { name: "Action items", field: 'actionsItem', data: actionsItem },
+        ];
+      }
     }
   };
   const classes = useStyles();
   return (
     <MainLayout>
-      {console.log(_getCol())}
       <Grid className={classes.container} container spacing={8}>
-        {_renderColumn(_getCol())}
+        {_renderColumn({ data: _getCol(), addAction, boardId: params.id, removeAction })}
       </Grid>
     </MainLayout>
   );
@@ -94,8 +83,13 @@ const BoardPage = (props) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   token: state.auth.token,
+  board: state.board
 });
 const mapDispatchToProps = (dispatch) => ({
   loadUser: () => dispatch(authActions.loadUser()),
+  loadBoardByID: (id) => dispatch(boardActions.loadBoardByID(id)),
+  addAction: (id, action) => dispatch(boardActions.addAction(id, action)),
+  removeAction: (id, action) => dispatch(boardActions.removeAction(id, action))
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BoardPage);

@@ -9,6 +9,14 @@ const boardApi = {
     const url = `/board/${id}`;
     return axiosClient.get(url, config);
   },
+  addAction: (id, body, config) => {
+    const url = `/board/${id}/action`;
+    return axiosClient.post(url, body, config);
+  },
+  removeAction: (id, body, config) => {
+    const url = `/board/${id}/remove-action`;
+    return axiosClient.post(url, body, config);
+  },
 };
 
 export default boardApi;

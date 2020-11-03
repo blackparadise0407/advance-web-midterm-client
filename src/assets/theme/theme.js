@@ -11,7 +11,7 @@ const theme = createMuiTheme({
       main: lightBlue[500],
     },
     error: {
-      main: red[800],
+      main: red[500],
     },
     success: {
       main: lightGreen[700]

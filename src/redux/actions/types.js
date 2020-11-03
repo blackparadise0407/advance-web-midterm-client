@@ -8,3 +8,13 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const CLEAR_AUTH_MESSAGE = 'CLEAR_AUTH_MESSAGE';
+
+// BOARD
+
+export const BOARD_LOADING = 'BOARD_LOADING';
+export const BOARD_LOADED = 'BOARD_LOADED';
+export const ADD_ACTION = 'ADD_ACTION';
+export const DELETE_ACTION = 'DELETE_ACTION';
+export const BOARD_ERROR = 'BOARD_ERROR';
+
+
