@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, makeStyles } from "@material-ui/core";
+import { Box, Container, makeStyles } from "@material-ui/core";
 
 import { MainLayout } from "../../layouts";
 import { boardApi } from "../../apis";
@@ -10,17 +10,31 @@ import { authActions } from "../../redux/actions";
 import tokenConfig from "../../helpers/tokenConfig";
 import { useHistory } from "react-router-dom";
 import BoardTable from "./components/BoardTable";
+import CreateBoard from "./components/CreateBoard";
+import { findIndex } from "lodash";
+import { blue } from "@material-ui/core/colors";
 
 import "./styles.scss";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(1, 2)
-  }
-}))
+    height: "100%",
+    display: "grid",
+    placeItems: "center",
+  },
+  box: {
+    "&> * + *": {
+      marginTop: "2rem",
+    },
+    width: "100%",
+    padding: theme.spacing(4, 6),
+    borderRadius: 10,
+    boxShadow: `0px 5px 30px -5px ${blue[200]}`,
+  },
+}));
 
 const HomePage = (props) => {
-  const { loadUser, token, isAuthenticated } = props;
+  const { loadUser, token, isAuthenticated, logoutUser, user } = props;
   const history = useHistory();
   const [userBoard, setUserBoard] = React.useState({
     isLoading: false,
@@ -50,6 +64,33 @@ const HomePage = (props) => {
       });
     }
   };
+
+  const _handleDeleteRow = (id) => {
+    const newUserBoard = { ...userBoard };
+    newUserBoard.data.splice(
+      findIndex(newUserBoard.data, (item) => item._id === id),
+      1
+    );
+    setUserBoard(newUserBoard);
+  };
+
+  const _handleAddRow = (row) => {
+    const newUserBoard = { ...userBoard };
+    newUserBoard.data = [...newUserBoard.data, row];
+    setUserBoard(newUserBoard);
+  };
+
+  const _handleUpdateRow = (row) => {
+    const newUserBoard = { ...userBoard };
+    newUserBoard.data.splice(
+      findIndex(newUserBoard.data, (item) => item._id === row._id),
+      1,
+      row
+    );
+    setUserBoard(newUserBoard);
+    console.log(newUserBoard);
+  };
+
   React.useEffect(() => {
     if (!isAuthenticated) {
       history.push("/login");
@@ -59,12 +100,20 @@ const HomePage = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loadUser]);
   const { data } = userBoard;
-  const classes = useStyles()
+  const classes = useStyles();
   return (
-    <MainLayout>
+    <MainLayout user={user} logoutUser={logoutUser}>
       <div className="HomePage">
         <Container className={classes.container} maxWidth="lg">
-          <BoardTable rows={data} />
+          <Box component="div" className={classes.box}>
+            <CreateBoard token={token} handleAddRow={_handleAddRow} />
+            <BoardTable
+              handleUpdateRow={_handleUpdateRow}
+              handleDeleteRow={_handleDeleteRow}
+              rows={data}
+              token={token}
+            />
+          </Box>
         </Container>
       </div>
     </MainLayout>
@@ -73,10 +122,12 @@ const HomePage = (props) => {
 
 const mapStateToProps = (state) => ({
   token: state.auth.token,
+  user: state.auth.user,
   isAuthenticated: state.auth.isAuthenticated,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadUser: () => dispatch(authActions.loadUser()),
+  logoutUser: () => dispatch(authActions.logoutUser()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,20 +22,23 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: 900,
     fontSize: 20,
+    color: "#fff",
   },
   name: {
     fontWeight: 900,
+    color: "#fff",
     fontSize: 16,
   },
   flexGrow: {
     flexGrow: 1,
   },
   icon: {
+    color: "#fff",
     fontSize: 25,
   },
 }));
 
-const MyAppBar = () => {
+const MyAppBar = ({ logoutUser, user }) => {
   const classes = useStyles();
 
   return (
@@ -48,10 +50,10 @@ const MyAppBar = () => {
           </Typography>
           <div className={classes.flexGrow} />
           <Typography variant="h6" className={classes.name}>
-            Username
+            {user && user.username}
           </Typography>
           <IconButton>
-            <ExitToAppIcon className={classes.icon} />
+            <ExitToAppIcon onClick={logoutUser} className={classes.icon} />
           </IconButton>
         </Toolbar>
       </AppBar>

@@ -1,93 +1,123 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { AuthLayout } from '../../layouts'
-import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import React from "react";
+import { connect } from "react-redux";
+import { AuthLayout } from "../../layouts";
+import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 
-import LoginForm from './components/LoginForm'
-import { LoginImage } from '../../constants'
-import './styles.scss'
-import { authActions } from '../../redux/actions'
-import { useHistory } from 'react-router-dom'
+import LoginForm from "./components/LoginForm";
+import { LoginImage } from "../../constants";
+import "./styles.scss";
+import { authActions } from "../../redux/actions";
+import { useHistory } from "react-router-dom";
+import { lightBlue } from "@material-ui/core/colors";
+import { toast } from "react-toastify";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-
-  },
+const useStyles = makeStyles((theme) => ({
+  root: {},
   form: {
     borderRadius: 20,
-    boxShadow: theme.shadows[20],
-    overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      padding: '4rem 0'
+    boxShadow: `0px 5px 30px -2px ${lightBlue[200]}`,
+    overflow: "hidden",
+    [theme.breakpoints.down("md")]: {
+      padding: "4rem 0",
     },
   },
   loginContainer: {
-    display: 'grid',
-    placeItems: 'center'
+    display: "grid",
+    placeItems: "center",
   },
   image: {
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
   },
   title: {
     fontWeight: 900,
-    textTransform: 'uppercase',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 28
+    textTransform: "uppercase",
+    [theme.breakpoints.down("md")]: {
+      fontSize: 28,
     },
-  }
-}))
+  },
+}));
 
 const LoginPage = (props) => {
   const {
     isAuthenticated,
     loadUser,
-    loginUser
-  } = props
-  const classes = useStyles()
-  const history = useHistory()
+    loginUser,
+    clearMessage,
+    err,
+    msg,
+  } = props;
+  const classes = useStyles();
+  const history = useHistory();
+
   React.useEffect(() => {
-    loadUser()
-  }, [loadUser])
+    clearMessage();
+  }, [clearMessage]);
+
+  React.useEffect(() => {
+    loadUser();
+  }, [loadUser]);
+
+  React.useEffect(() => {
+    if (msg) {
+      toast.success(msg);
+    }
+    if (err) {
+      if (err === "Unauthorized, no token provided") return;
+      toast.error(err);
+    }
+  }, [msg, err]);
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      history.push('/')
+      history.push("/");
     }
-  }, [history, isAuthenticated])
+  }, [history, isAuthenticated]);
 
   return (
     <AuthLayout>
-      <Container className={'LoginPage ' + classes.root}>
-        <Grid className={classes.form} container >
-          <Grid className={classes.image} item xs={12} lg={6} spacing={2}>
+      <Container maxWidth="md" className={"LoginPage " + classes.root}>
+        <Grid className={classes.form} container>
+          <Grid className={classes.image} item xs={12} md={6} spacing={2}>
             <div className="image-wrapper">
               <img src={LoginImage} alt="" />
             </div>
           </Grid>
-          <Grid className={classes.loginContainer} xs={12} lg={6} spacing={2} item>
-            <Typography className={classes.title} align="center" color='primary' variant='h2'>WELCOME BACK</Typography>
+          <Grid
+            className={classes.loginContainer}
+            xs={12}
+            md={6}
+            spacing={2}
+            item
+          >
+            <Typography
+              className={classes.title}
+              align="center"
+              color="primary"
+              variant="h2"
+            >
+              WELCOME BACK
+            </Typography>
             <LoginForm loginUser={loginUser} />
           </Grid>
         </Grid>
       </Container>
     </AuthLayout>
-  )
-}
+  );
+};
 
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  msg: state.auth.msg,
+  err: state.auth.err,
+});
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-})
-
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   loadUser: () => dispatch(authActions.loadUser()),
-  loginUser: ({ email, password }) => dispatch(authActions.login({ email, password }))
-})
+  loginUser: ({ email, password }) =>
+    dispatch(authActions.login({ email, password })),
+  clearMessage: () => dispatch(authActions.clearMessage()),
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginPage)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

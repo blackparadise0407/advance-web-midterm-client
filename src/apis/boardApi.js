@@ -17,6 +17,18 @@ const boardApi = {
     const url = `/board/${id}/remove-action`;
     return axiosClient.post(url, body, config);
   },
+  removeBoard: (id, config) => {
+    const url = `/board/${id}`;
+    return axiosClient.delete(url, config);
+  },
+  addBoard: (body, config) => {
+    const url = `/board`;
+    return axiosClient.post(url, body, config);
+  },
+  update: (id, body, config) => {
+    const url = `/board/${id}`;
+    return axiosClient.post(url, body, config);
+  },
 };
 
 export default boardApi;

@@ -1,15 +1,18 @@
+import React from "react";
 import { ThemeProvider } from "@material-ui/core";
 import { map } from "lodash";
-import React from "react";
-import { useSelector } from "react-redux";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import theme from "./assets/theme/theme";
-import { Loader, ProtectedRoute } from "./components";
+import { Loader } from "./components";
 import NotFound from "./pages/NotFound";
 const HomePage = React.lazy(async () => await import("./pages/Home"));
 const RegisterPage = React.lazy(async () => await import("./pages/Register"));
 const BoardPage = React.lazy(async () => await import("./pages/Board"));
 const LoginPage = React.lazy(async () => await import("./pages/Login"));
+const ProfilePage = React.lazy(async () => await import("./pages/Profile"));
+
 // const NotFound = React.lazy(async () => await import("./pages/NotFound"));
 
 const pages = [
@@ -31,6 +34,11 @@ const pages = [
   {
     path: "/board/:id",
     component: BoardPage,
+    isExact: true,
+  },
+  {
+    path: "/profile",
+    component: ProfilePage,
     isExact: true,
   },
   // {
@@ -71,6 +79,17 @@ const App = () => {
             <Route path={page.path} render={() => <page.component />} />
           </React.Suspense> */}
         </Switch>
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </ThemeProvider>
     </Router>
   );

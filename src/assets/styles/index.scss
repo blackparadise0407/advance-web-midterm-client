@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import './variable';
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "./variable";
 
 *,
 *:before,
@@ -38,7 +38,7 @@ h6 {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -64,8 +64,8 @@ section {
   width: 100%;
 }
 
-input[type='password']::-ms-reveal,
-input[type='password']::-ms-clear {
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
   display: none;
 }
 
@@ -132,4 +132,30 @@ input[type='password']::-ms-clear {
 
 ul {
   list-style: none;
+}
+
+.Toastify__toast-container {
+  font-family: $main-font;
+  font-size: 1.4rem;
+  padding-left: 1rem;
+}
+
+/** Classes for the displayed toast **/
+.Toastify__toast {
+  border: 1px solid #ddd;
+  border-radius: 4px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0px 10px 20px -3px #aaa;
+}
+
+.Toastify__toast--success {
+  background-color: $success !important;
+}
+.Toastify__toast--warning {
+  background-color: $warning !important;
+}
+.Toastify__toast--error {
+  background-color: $error !important;
 }

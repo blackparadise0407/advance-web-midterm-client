@@ -16,6 +16,7 @@ const initialState = {
   token: localStorage.getItem("token"),
   user: null,
   msg: "",
+  err: "",
 };
 
 export default (state = initialState, action) => {
@@ -25,6 +26,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: true,
         msg: "",
+        err: "",
       };
     case USER_LOADED:
       return {
@@ -37,6 +39,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        err: "",
         msg: action.payload.msg,
         isLoading: false,
         isAuthenticated: false,
@@ -46,6 +49,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        err: "",
         isAuthenticated: true,
         isLoading: false,
         msg: action.payload.msg,
@@ -57,7 +61,8 @@ export default (state = initialState, action) => {
       localStorage.removeItem("token");
       return {
         ...state,
-        msg: action.payload.msg,
+        msg: "",
+        err: action.payload.err,
         user: null,
         token: null,
         isLoading: false,
@@ -67,6 +72,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         msg: "",
+        err: "",
       };
     default:
       return { ...state };

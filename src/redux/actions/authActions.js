@@ -34,7 +34,7 @@ export const loadUser = () => async (dispatch, getState) => {
     dispatch({
       type: AUTH_ERROR,
       payload: {
-        msg: error.response.data.message || error,
+        err: error.response.data.message || error,
       },
     });
   }
@@ -55,7 +55,7 @@ export const register = ({ username, email, password }) => async (dispatch) => {
     dispatch({
       type: REGISTER_FAIL,
       payload: {
-        msg: error.response.data.message || error,
+        err: error.response.data.message || error,
       },
     });
   }
@@ -80,8 +80,21 @@ export const login = ({ email, password }) => async (dispatch) => {
     dispatch({
       type: LOGIN_FAIL,
       payload: {
-        msg: error.response.data.message || error,
+        err: error.response.data.message || error,
       },
     });
   }
+};
+
+export const logoutUser = () => (dispatch) => {
+  dispatch({
+    type: LOGOUT_SUCCESS,
+    payload: {
+      err: "",
+    },
+  });
+};
+
+export const clearMessage = () => (dispatch) => {
+  dispatch({ type: CLEAR_AUTH_MESSAGE });
 };

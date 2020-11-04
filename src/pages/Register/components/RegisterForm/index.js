@@ -1,43 +1,38 @@
-import React from 'react';
-import { map } from 'lodash';
-import { withFormik } from 'formik';
-import LockIcon from '@material-ui/icons/Lock';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import EmailIcon from '@material-ui/icons/Email';
-import { InputField } from '../../../../components';
-import { registerSchema } from '../../../../helpers/validation';
-import './styles.scss';
-import {
-  Button,
-  Grid,
-  Link,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import React from "react";
+import { map } from "lodash";
+import { withFormik } from "formik";
+import LockIcon from "@material-ui/icons/Lock";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import EmailIcon from "@material-ui/icons/Email";
+import { InputField } from "../../../../components";
+// import { registerSchema } from "../../../../helpers/validation";
+import "./styles.scss";
+import { Button, Grid, Link, makeStyles, Typography } from "@material-ui/core";
+import { blue } from "@material-ui/core/colors";
 
 const inputProps = [
   {
-    id: 'username',
-    label: 'Username',
-    type: 'text',
+    id: "username",
+    label: "Username",
+    type: "text",
     icon: AccountCircleIcon,
   },
   {
-    id: 'email',
-    label: 'Email',
-    type: 'email',
+    id: "email",
+    label: "Email",
+    type: "email",
     icon: EmailIcon,
   },
   {
-    id: 'password',
-    label: 'Password',
-    type: 'password',
+    id: "password",
+    label: "Password",
+    type: "password",
     icon: LockIcon,
   },
   {
-    id: 'confirmPassword',
-    label: 'Confirm password',
-    type: 'password',
+    id: "confirmPassword",
+    label: "Confirm password",
+    type: "password",
     icon: LockIcon,
   },
 ];
@@ -48,7 +43,7 @@ const _renderInput = (props) => {
     onChange,
     errors,
     handleBlur,
-    touched,
+    // touched,
     values,
   } = props;
   if (inputProps.length) {
@@ -78,10 +73,11 @@ const _renderInput = (props) => {
 
 const useStyles = makeStyles({
   button: {
-    padding: '1rem 2rem',
-    marginTop: '3rem',
-    color: 'white',
-    borderRadius: '30px',
+    padding: "1rem 2rem",
+    marginTop: "3rem",
+    color: "white",
+    borderRadius: "30px",
+    boxShadow: `0px 5px 20px -2px ${blue[200]}`,
   },
   text: {
     fontWeight: 900,
@@ -121,14 +117,14 @@ const RegisterForm = (props) => {
       </Button>
       <Grid container>
         <Grid item xs={12} sm={6}>
-          <Link href='/' color="error" underline="none">
+          <Link href="/" color="error" underline="none">
             <Typography align="left" variant="body1">
               Back to home page
             </Typography>
           </Link>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Link href='/login' color="error" underline="none">
+          <Link href="/login" color="error" underline="none">
             <Typography align="right" variant="body1">
               Login here
             </Typography>
@@ -141,10 +137,10 @@ const RegisterForm = (props) => {
 
 const EnhancedRegister = withFormik({
   mapPropsToValues: ({ username, email, password, confirmPassword }) => ({
-    username: username || '',
-    email: email || '',
-    password: password || '',
-    confirmPassword: confirmPassword || '',
+    username: username || "",
+    email: email || "",
+    password: password || "",
+    confirmPassword: confirmPassword || "",
   }),
   // validationSchema: registerSchema,
   handleSubmit: ({ username, email, password }, { props }) => {

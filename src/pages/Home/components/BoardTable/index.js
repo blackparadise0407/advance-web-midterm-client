@@ -9,13 +9,15 @@ import {
   TableRow,
   withStyles,
   TableCell,
-  TableFooter,
-  TablePagination,
+  Box,
 } from "@material-ui/core";
 import { map } from "lodash";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import CreateIcon from "@material-ui/icons/Create";
-import { Link } from "react-router-dom";
+import { boardApi } from "../../../../apis";
+import tokenConfig from "../../../../helpers/tokenConfig";
+import MyTableRow from "../MyTableRow";
+import { EmptyImage } from "../../../../constants";
+import { toast } from "react-toastify";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
@@ -38,6 +40,13 @@ const useStyles = makeStyles((theme) => ({
       opacity: "0.6",
       cursor: "pointer",
     },
+  },
+  imgWrapper: {
+    display: "grid",
+    placeItems: "center",
+  },
+  img: {
+    maxWidth: "22rem",
   },
 }));
 
@@ -63,18 +72,20 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const BoardTable = ({ rows = [] }) => {
+const BoardTable = ({ rows = [], token, handleDeleteRow, handleUpdateRow }) => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const _handleDelete = async (id) => {
+    const config = tokenConfig(token);
+    handleDeleteRow(id);
+    try {
+      const { message } = await boardApi.removeBoard(id, config);
+      toast.success(message);
+    } catch (error) {
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
   if (rows) {
@@ -96,56 +107,30 @@ const BoardTable = ({ rows = [] }) => {
                 {map(
                   rows,
                   ({ _id, name, createdBy: { email }, createdAt }, idx) => (
-                    <StyledTableRow key={idx}>
-                      <StyledTableCell
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {idx}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Link
-                          style={{ width: "100%", height: "100%" }}
-                          to={{ pathname: `/board/${_id}` }}
-                        >
-                          {name}
-                        </Link>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">{email}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        {new Date(createdAt).toDateString()}
-                      </StyledTableCell>
-                      <StyledTableCell
-                        align="center"
-                        className={classes.actions}
-                      >
-                        <CreateIcon color="primary" className={classes.icons} />
-                        <DeleteForeverIcon
-                          color="error"
-                          className={classes.icons}
-                        />
-                      </StyledTableCell>
-                    </StyledTableRow>
+                    <MyTableRow
+                      idx={idx}
+                      key={idx}
+                      _id={_id}
+                      name={name}
+                      email={email}
+                      createdAt={createdAt}
+                      _handleDelete={_handleDelete}
+                      token={token}
+                      handleUpdateRow={handleUpdateRow}
+                    />
                   )
                 )}
               </>
-            ) : null}
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Box className={classes.imgWrapper} component="div">
+                    <img className={classes.img} src={EmptyImage} atl="" />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
-          <TableFooter className={classes.footer}>
-            {/* <StyledTableRow>
-              <div className={classes.flex} />
-              <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
-            </StyledTableRow> */}
-          </TableFooter>
         </Table>
       </TableContainer>
     );

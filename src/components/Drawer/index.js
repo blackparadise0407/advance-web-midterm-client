@@ -1,12 +1,10 @@
 import React from "react";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import "./styles.scss";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import { Link } from "react-router-dom";
 
-const Drawer = () => {
+const Drawer = ({ logoutUser }) => {
   const drawerEl = React.useRef(null);
   const [open, setOpen] = React.useState(false);
   const handleClick = () => setOpen(!open);
@@ -20,13 +18,10 @@ const Drawer = () => {
         <Link to="/">
           <li className="item">All boards</li>
         </Link>
-        <Link to="/">
-          <li className="item">Create new board</li>
-        </Link>
         <Link to="/profile">
           <li className="item">Profile</li>
         </Link>
-        <Link to="/">
+        <Link to="#" onClick={logoutUser}>
           <li className="item">Logout</li>
         </Link>
       </ul>
