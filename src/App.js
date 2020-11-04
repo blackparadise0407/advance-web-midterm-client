@@ -1,24 +1,95 @@
-import { ThemeProvider } from "@material-ui/core";
 import React from "react";
+import { ThemeProvider } from "@material-ui/core";
+import { map } from "lodash";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import theme from "./assets/theme/theme";
-import { ErrorBoundary, Loader } from "./components";
-const HomePage = React.lazy(() => import("./pages/Home"));
+import { Loader } from "./components";
+import NotFound from "./pages/NotFound";
+const HomePage = React.lazy(async () => await import("./pages/Home"));
+const RegisterPage = React.lazy(async () => await import("./pages/Register"));
+const BoardPage = React.lazy(async () => await import("./pages/Board"));
+const LoginPage = React.lazy(async () => await import("./pages/Login"));
+const ProfilePage = React.lazy(async () => await import("./pages/Profile"));
+
+// const NotFound = React.lazy(async () => await import("./pages/NotFound"));
+
+const pages = [
+  {
+    path: "/",
+    component: HomePage,
+    isExact: true,
+  },
+  {
+    path: "/register",
+    component: RegisterPage,
+    isExact: true,
+  },
+  {
+    path: "/login",
+    component: LoginPage,
+    isExact: true,
+  },
+  {
+    path: "/board/:id",
+    component: BoardPage,
+    isExact: true,
+  },
+  {
+    path: "/profile",
+    component: ProfilePage,
+    isExact: true,
+  },
+  // {
+  //   path: "*",
+  //   component: NotFound,
+  //   isExact: false,
+  // },
+];
+
+const _renderPages = (pages) => {
+  return (
+    <>
+      {map(pages, (page, idx) => (
+        <Route
+          key={idx}
+          exact={page.isExact}
+          path={page.path}
+          component={page.component}
+          // render={() => <page.component />}
+        />
+      ))}
+    </>
+  );
+};
 
 const App = () => {
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <Switch>
-          <Route
-            path="/"
-            render={() => (
-              <React.Suspense fallback={<Loader isLoading={true} />}>
-                <HomePage />
-              </React.Suspense>
-            )}
-          />
+          <React.Suspense fallback={<Loader isLoading={true} />}>
+            {_renderPages(pages)}
+          </React.Suspense>
+          <Route path="*" component={NotFound} />
+          {/* <React.Suspense fallback={<Loader isLoading={true} />}>
+          </React.Suspense> */}
+          {/* <React.Suspense fallback={<Loader isLoading={true} />}>
+            <Route path={page.path} render={() => <page.component />} />
+          </React.Suspense> */}
         </Switch>
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </ThemeProvider>
     </Router>
   );

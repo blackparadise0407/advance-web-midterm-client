@@ -1,0 +1,24 @@
+//AUTH
+export const USER_LOADING = 'USER_LOADING';
+export const USER_LOADED = 'USER_LOADED';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const REGISTER_FAIL = 'REGISTER_FAIL';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
+export const UPDATE_FAIL = 'UPDATE_FAIL';
+export const CLEAR_AUTH_MESSAGE = 'CLEAR_AUTH_MESSAGE';
+
+
+// BOARD
+
+export const BOARD_LOADING = 'BOARD_LOADING';
+export const BOARD_LOADED = 'BOARD_LOADED';
+export const ADD_ACTION = 'ADD_ACTION';
+export const UPDATE_ACTION = 'UPDATE_ACTION';
+export const DELETE_ACTION = 'DELETE_ACTION';
+export const BOARD_ERROR = 'BOARD_ERROR';
+
+
