@@ -8,6 +8,8 @@ import {
   USER_LOADED,
   USER_LOADING,
   CLEAR_AUTH_MESSAGE,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL
 } from "../actions/types";
 
 const initialState = {
@@ -68,6 +70,19 @@ export default (state = initialState, action) => {
         isLoading: false,
         isAuthenticated: false,
       };
+    case UPDATE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+        msg: action.payload.msg
+      }
+    case UPDATE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        err: action.payload
+      }
     case CLEAR_AUTH_MESSAGE:
       return {
         ...state,

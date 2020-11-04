@@ -4,6 +4,7 @@ import {
   BOARD_LOADING,
   ADD_ACTION,
   DELETE_ACTION,
+  UPDATE_ACTION
 } from '../actions/types'
 
 const initialState = {
@@ -24,6 +25,7 @@ export default (state = initialState, action) => {
       }
     case BOARD_LOADED:
     case ADD_ACTION:
+    case UPDATE_ACTION:
     case DELETE_ACTION: {
       return {
         ...state,

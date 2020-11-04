@@ -13,6 +13,7 @@ import { map } from "lodash";
 import { blue, cyan, grey } from "@material-ui/core/colors";
 import SendIcon from "@material-ui/icons/Send";
 import BackspaceIcon from "@material-ui/icons/Backspace";
+import Action from "../Action";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +76,7 @@ const Column = ({
   field,
   boardId,
   color,
+  updateAction
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -115,8 +117,12 @@ const Column = ({
         {boardName}
       </Typography>
       {actions.length
-        ? map(actions, (item) => (
-            <Paper
+        ? map(actions, ({ name, _id }) => (
+          <Action boardId={boardId} field={field} updateAction={updateAction} _removeAction={_removeAction} name={name} _id={_id} />
+        ))
+        : null}
+
+      {/* <Paper
               className={classes.action}
               component="div"
               variant="elevation"
@@ -130,9 +136,7 @@ const Column = ({
                 fontSize="large"
                 onClick={() => _removeAction(item._id)}
               />
-            </Paper>
-          ))
-        : null}
+            </Paper> */}
       {isEdit ? (
         <InputBase
           className={classes.input}
@@ -156,20 +160,23 @@ const Column = ({
           />
           <BackspaceIcon
             className={classes.icon}
-            onClick={() => setIsEdit(false)}
+            onClick={() => {
+              setIsEdit(false)
+              setValue('')
+            }}
             color="error"
             fontSize="large"
           />
         </Box>
       ) : (
-        <Button
-          onClick={_handleClick}
-          variant="contained"
-          className={classes.button}
-        >
-          <AddIcon fontSize="large" />
-        </Button>
-      )}
+          <Button
+            onClick={_handleClick}
+            variant="contained"
+            className={classes.button}
+          >
+            <AddIcon fontSize="large" />
+          </Button>
+        )}
     </Paper>
   );
 };

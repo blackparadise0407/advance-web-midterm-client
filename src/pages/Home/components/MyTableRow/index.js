@@ -108,7 +108,10 @@ const MyTableRow = ({
   };
   const _handleSubmit = async (e, id) => {
     e.preventDefault();
-    if (!value) return;
+    if (!value) {
+      toast.warn("Name cannot be empty")
+      return
+    }
     const config = tokenConfig(token);
     const body = JSON.stringify({ name: value });
     try {
@@ -146,13 +149,13 @@ const MyTableRow = ({
             />
           </Box>
         ) : (
-          <Link
-            style={{ width: "100%", height: "100%" }}
-            to={{ pathname: `/board/${_id}` }}
-          >
-            {name}
-          </Link>
-        )}
+            <Link
+              style={{ width: "100%", height: "100%" }}
+              to={{ pathname: `/board/${_id}` }}
+            >
+              {name}
+            </Link>
+          )}
       </StyledTableCell>
       <StyledTableCell align="center">{email}</StyledTableCell>
       <StyledTableCell align="center">
@@ -166,12 +169,12 @@ const MyTableRow = ({
             className={classes.icons}
           />
         ) : (
-          <CreateIcon
-            onClick={_handleEdit}
-            color="primary"
-            className={classes.icons}
-          />
-        )}
+            <CreateIcon
+              onClick={_handleEdit}
+              color="primary"
+              className={classes.icons}
+            />
+          )}
         <DeleteForeverIcon
           color="error"
           className={classes.icons}

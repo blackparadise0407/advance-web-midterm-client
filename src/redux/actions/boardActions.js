@@ -66,3 +66,22 @@ export const removeAction = ({ id, action: { field, actionId } }) => async (
     dispatch({ type: BOARD_ERROR, err: error.response.data.message || error });
   }
 };
+
+export const updateAction = ({ id, action: { field, _id, name } }) => async (dispatch,
+  getState) => {
+  dispatch({ type: BOARD_LOADING });
+  const config = tokenConfig(getState);
+  const body = JSON.stringify({ field, _id, name });
+  try {
+    const { data, message } = await boardApi.updateAction(id, body, config);
+    dispatch({
+      type: ADD_ACTION,
+      payload: {
+        message,
+        data,
+      },
+    });
+  } catch (error) {
+    dispatch({ type: BOARD_ERROR, err: error.response.data.message || error });
+  }
+}

@@ -8,6 +8,8 @@ import {
   USER_LOADED,
   USER_LOADING,
   CLEAR_AUTH_MESSAGE,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
 } from "./types";
 import { authApi } from "../../apis";
 
@@ -85,6 +87,28 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
   }
 };
+
+export const updateProfile = ({ username, password }) => async (dispatch, getState) => {
+  dispatch({ type: USER_LOADING });
+  try {
+    const config = tokenConfig(getState)
+    const body = JSON.stringify({ username, password });
+    const { data, message } = await authApi.updateProfile(body, config)
+    dispatch({
+      type: UPDATE_SUCCESS,
+      payload: {
+        user: data,
+        msg: message
+      }
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_FAIL,
+      payload: error.response.data.message || error
+    });
+  }
+
+}
 
 export const logoutUser = () => (dispatch) => {
   dispatch({

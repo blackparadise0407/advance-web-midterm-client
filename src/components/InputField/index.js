@@ -8,15 +8,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     borderRadius: 20,
-    // '& .MuiOutlinedInput-root': {
-    //   '& fieldset': {
-    //     borderRadius: '20px',
-    //   },
-    //   '&:hover': {
-    //     outline: 'none',
-    //     borderColor: '#fff'
-    //   }
-    // },
+    '& .MuiOutlinedInput-root': {
+      fontWeight: 600,
+      fontSize: 16,
+      '& fieldset': {
+        borderRadius: '20px',
+      },
+    },
 
   },
   icon: {

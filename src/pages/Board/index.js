@@ -1,4 +1,4 @@
-import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Box, Container, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { connect } from "react-redux";
 import { MainLayout } from "../../layouts";
@@ -7,15 +7,34 @@ import { map } from "lodash";
 import Column from "./components/Column";
 import { useHistory } from "react-router-dom";
 import { lightBlue, lightGreen, orange } from "@material-ui/core/colors";
+import './styles.scss';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "1rem",
     padding: theme.spacing(0, 2),
+    height: "100% !important",
+
   },
+  box: {
+    height: "100% !important",
+    padding: theme.spacing(2, 2),
+    background: `linear-gradient(105deg, ${lightBlue[100]}, ${orange[100]})`
+  },
+  title: {
+    // color: 'grey'
+    textShadow: `3px 3px 3px ${lightBlue[700]}`
+  },
+  paper: {
+    padding: theme.spacing(3, 2),
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.common.white,
+    maxWidth: "40rem",
+    margin: '0 auto'
+  }
 }));
 
-const _renderColumn = ({ data = [], addAction, boardId, removeAction }) => {
+const _renderColumn = ({ data = [], addAction, boardId, removeAction, updateAction }) => {
   if (data.length) {
     return (
       <React.Fragment>
@@ -29,6 +48,7 @@ const _renderColumn = ({ data = [], addAction, boardId, removeAction }) => {
               boardName={item.name}
               actions={item.data}
               color={item.color}
+              updateAction={updateAction}
             />
           </Grid>
         ))}
@@ -48,6 +68,7 @@ const BoardPage = (props) => {
     removeAction,
     logoutUser,
     user,
+    updateAction
   } = props;
   const history = useHistory();
 
@@ -91,17 +112,25 @@ const BoardPage = (props) => {
   const classes = useStyles();
   return (
     <MainLayout user={user} logoutUser={logoutUser}>
-      <Typography align="center" variant="h2">
-        {board.data && board.data.name}
-      </Typography>
-      <Grid className={classes.container} container spacing={8}>
-        {_renderColumn({
-          data: _getCol(),
-          addAction,
-          boardId: params.id,
-          removeAction,
-        })}
-      </Grid>
+      <div className={'BoardPage ' + classes.box}>
+        <Box component='div' >
+          <Paper className={classes.paper} elevation={3} outlined>
+            <Typography className={classes.title} align="center" variant="h2">
+              {board.data && board.data.name}
+            </Typography>
+          </Paper>
+
+          <Grid className={classes.container} container spacing={8}>
+            {_renderColumn({
+              data: _getCol(),
+              addAction,
+              boardId: params.id,
+              removeAction,
+              updateAction
+            })}
+          </Grid>
+        </Box>
+      </div>
     </MainLayout>
   );
 };
@@ -118,5 +147,6 @@ const mapDispatchToProps = (dispatch) => ({
   addAction: (id, action) => dispatch(boardActions.addAction(id, action)),
   removeAction: (id, action) => dispatch(boardActions.removeAction(id, action)),
   logoutUser: () => dispatch(authActions.logoutUser()),
+  updateAction: (id, action) => dispatch(boardActions.updateAction(id, action))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BoardPage);

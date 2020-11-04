@@ -29,6 +29,10 @@ const boardApi = {
     const url = `/board/${id}`;
     return axiosClient.post(url, body, config);
   },
+  updateAction: (id, body, config) => {
+    const url = `/board/${id}/update-action`;
+    return axiosClient.post(url, body, config);
+  }
 };
 
 export default boardApi;

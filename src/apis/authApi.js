@@ -13,6 +13,10 @@ const authApi = {
     const url = "/auth/login";
     return axiosClient.post(url, body);
   },
+  updateProfile: (body, config) => {
+    const url = '/auth/update';
+    return axiosClient.post(url, body, config)
+  }
 };
 
 export default authApi;
