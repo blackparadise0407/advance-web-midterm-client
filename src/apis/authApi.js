@@ -16,7 +16,15 @@ const authApi = {
   updateProfile: (body, config) => {
     const url = '/auth/update';
     return axiosClient.post(url, body, config)
-  }
+  },
+  googleSignIn: (body) => {
+    const url = '/auth/google/callback';
+    return axiosClient.post(url, body)
+  },
+  facebookSignIn: (body) => {
+    const url = '/auth/facebook/callback';
+    return axiosClient.post(url, body)
+  },
 };
 
 export default authApi;

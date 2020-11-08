@@ -25,16 +25,25 @@ const useStyles = makeStyles((theme) => ({
     display: "grid",
     placeItems: "center",
   },
+  imageWrapper: {
+    height: "100%",
+    display: 'flex',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   image: {
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
   title: {
-    fontWeight: 900,
+    fontWeight: 700,
+    fontSize: 30,
+    marginTop: theme.spacing(1),
     textTransform: "uppercase",
     [theme.breakpoints.down("md")]: {
-      fontSize: 28,
+      fontSize: 26,
     },
   },
 }));
@@ -47,6 +56,8 @@ const LoginPage = (props) => {
     clearMessage,
     err,
     msg,
+    googleSignIn,
+    facebookSignIn
   } = props;
   const classes = useStyles();
   const history = useHistory();
@@ -80,7 +91,7 @@ const LoginPage = (props) => {
       <Container maxWidth="md" className={"LoginPage " + classes.root}>
         <Grid className={classes.form} container>
           <Grid className={classes.image} item xs={12} md={6} spacing={2}>
-            <div className="image-wrapper">
+            <div className={classes.imageWrapper} >
               <img src={LoginImage} alt="" />
             </div>
           </Grid>
@@ -95,11 +106,11 @@ const LoginPage = (props) => {
               className={classes.title}
               align="center"
               color="primary"
-              variant="h2"
+              variant="body1"
             >
               WELCOME BACK
             </Typography>
-            <LoginForm loginUser={loginUser} />
+            <LoginForm facebookSignIn={facebookSignIn} googleSignIn={googleSignIn} loginUser={loginUser} />
           </Grid>
         </Grid>
       </Container>
@@ -117,6 +128,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadUser: () => dispatch(authActions.loadUser()),
   loginUser: ({ email, password }) =>
     dispatch(authActions.login({ email, password })),
+  googleSignIn: (body) => dispatch(authActions.googleSignIn(body)),
+  facebookSignIn: (body) => dispatch(authActions.facebookSignIn(body)),
   clearMessage: () => dispatch(authActions.clearMessage()),
 });
 

@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,15 +46,17 @@ const MyAppBar = ({ logoutUser, user }) => {
     <div className={classes.root}>
       <AppBar className={classes.appbar} color="secondary" position="static">
         <Toolbar>
-          <Typography color="inherit" variant="h2" className={classes.title}>
-            Retro Sprint
+          <Link href="/">
+            <Typography color="inherit" variant="h2" className={classes.title}>
+              Retro Sprint
           </Typography>
+          </Link>
           <div className={classes.flexGrow} />
           <Typography variant="h6" className={classes.name}>
             {user && user.username}
           </Typography>
-          <IconButton>
-            <ExitToAppIcon onClick={logoutUser} className={classes.icon} />
+          <IconButton onClick={logoutUser} >
+            <ExitToAppIcon className={classes.icon} />
           </IconButton>
         </Toolbar>
       </AppBar>

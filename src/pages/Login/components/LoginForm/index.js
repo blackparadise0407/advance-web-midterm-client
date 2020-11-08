@@ -3,10 +3,15 @@ import { map } from "lodash";
 import { withFormik } from "formik";
 import LockIcon from "@material-ui/icons/Lock";
 import EmailIcon from "@material-ui/icons/Email";
-import { InputField } from "../../../../components";
-import "./styles.scss";
 import { Button, Grid, Link, makeStyles, Typography } from "@material-ui/core";
 import { lightBlue } from "@material-ui/core/colors";
+import GoogleLogin from "react-google-login";
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import clsx from 'clsx'
+
+import { InputField } from "../../../../components";
+import { GoogleSvg, FacebookSvg } from "../../../../constants";
+import "./styles.scss";
 
 const inputProps = [
   {
@@ -50,7 +55,7 @@ const _renderInput = (props) => {
   } else return null;
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   button: {
     padding: "1rem 2rem",
     marginTop: "3rem",
@@ -62,7 +67,50 @@ const useStyles = makeStyles({
     fontWeight: 900,
     letterSpacing: 3,
   },
-});
+  socialLogin: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    margin: theme.spacing(1, 0),
+    backgroundColor: "#fff",
+    transition: "opacity 0.2s ease, background 0.2s ease",
+    // border: '1px solid #aaa',
+    padding: theme.spacing(1, 2),
+
+    borderRadius: 30,
+    "&:hover": {
+      opacity: "0.8",
+      "& $buttonText": {
+        color: "#fff"
+      }
+    }
+
+  },
+  facebook: {
+    boxShadow: "0px 2px 15px -4px #bccbf5",
+    "&:hover": {
+      backgroundColor: "#3C5898"
+    }
+  },
+  google: {
+    boxShadow: "0px 2px 15px -4px #f5b9b5",
+    "&:hover": {
+      backgroundColor: "#F65312"
+    }
+  },
+  buttonText: {
+    textTransform: 'initial',
+    color: "#000",
+    fontWeight: 500,
+    transition: "color 0.2s ease",
+  },
+  svg: {
+    marginRight: '1rem',
+    width: '2.6rem',
+    height: '2.6rem',
+  }
+}));
+
 
 const LoginForm = (props) => {
   const {
@@ -72,8 +120,23 @@ const LoginForm = (props) => {
     handleChange,
     handleSubmit,
     handleBlur,
+    googleSignIn,
+    facebookSignIn
   } = props;
   const classes = useStyles();
+
+  const responseGoogle = ({ profileObj: { email, googleId, name } }) => {
+    googleSignIn({ email, googleId, name })
+  }
+
+  const failGoogle = () => {
+    console.log('FAILED');
+  }
+
+  const responseFacebook = ({ name, id }) => {
+    facebookSignIn({ id, name })
+  }
+
   return (
     <form onSubmit={handleSubmit} className="LoginForm spacing-vertical-l">
       {_renderInput({
@@ -109,6 +172,35 @@ const LoginForm = (props) => {
             </Typography>
           </Link>
         </Grid>
+        <Typography className="divider" type='body1'>OR</Typography>
+        <GoogleLogin
+          clientId="388165780875-depk0657p2fkgbdi2e7rnjvcrueocfqd.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={failGoogle}
+          cookiePolicy={'single_host_origin'}
+          render={renderProps => (
+            <Button onClick={renderProps.onClick} className={clsx(classes.socialLogin, classes.google)}>
+              <img className={classes.svg} src={GoogleSvg} alt="" />
+              <Typography className={classes.buttonText} variant="body1">Sign in with google</Typography>
+            </Button>
+          )}
+        />
+        <FacebookLogin
+          appId="274806887289221"
+          autoLoad={true}
+          fields="name,email,picture"
+          onClick={
+            () => console.log('Click')
+          }
+          callback={responseFacebook}
+          render={renderProps => (
+            <Button onClick={renderProps.onClick} className={clsx(classes.socialLogin, classes.facebook)}>
+              <img className={classes.svg} src={FacebookSvg} alt="" />
+              <Typography className={classes.buttonText} variant="body1">Sign in with facebook</Typography>
+            </Button>
+          )}
+        />
       </Grid>
     </form>
   );

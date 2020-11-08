@@ -13,4 +13,27 @@
 
     width: 100%;
   }
+  .divider {
+    margin: 0.6rem auto;
+    // width: 100%;
+    position: relative;
+    &:before,
+    &:after {
+      top: 50%;
+      position: absolute;
+      content: '';
+      width: 10rem;
+      height: 1px;
+      background-color: #ddd;
+      transform: translateY(-50%);
+    }
+    &:before {
+      right: -120px;
+      transform-origin: right;
+    }
+    &:after {
+      transform-origin: left;
+      left: -120px;
+    }
+  }
 }
