@@ -183,10 +183,10 @@ const BoardPage = (props) => {
                     <ShareIcon fontSize="large" className={classes.icon} />
                   </IconButton>
                 }
-                url='http://example.com/board'
+                // url='http://example.com/board'
                 quote="Come and have some fun together"
                 hashtag="#retrosprint"
-              // url={window.location.href}
+                url={window.location.href}
               />
             </Typography>
           </Paper>
