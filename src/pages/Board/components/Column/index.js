@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Button,
@@ -6,65 +6,74 @@ import {
   Paper,
   Typography,
   InputBase,
-} from "@material-ui/core";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import AddIcon from "@material-ui/icons/Add";
-import { map } from "lodash";
-import { blue, cyan, grey } from "@material-ui/core/colors";
-import SendIcon from "@material-ui/icons/Send";
-import BackspaceIcon from "@material-ui/icons/Backspace";
-import Action from "../Action";
+  CircularProgress,
+} from '@material-ui/core';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import AddIcon from '@material-ui/icons/Add';
+import { map } from 'lodash';
+import { blue, cyan, grey } from '@material-ui/core/colors';
+import SendIcon from '@material-ui/icons/Send';
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import Action from '../Action';
+import { Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.secondary.main,
     // maxWidth: "26rem",
-    width: "100%",
-    padding: "2rem 2rem",
+    width: '100%',
+    padding: '2rem 2rem',
     boxShadow: `5px 10px 20px -5px ${blue[200]}`,
     borderRadius: 10,
     border: ` 1px solid ${theme.palette.action.selected}`,
-    "&> * + *": {
-      marginTop: "1rem",
+    '&> * + *': {
+      marginTop: '1rem',
     },
   },
   title: {
-    color: "#fff",
+    color: '#fff',
   },
   action: {
-    padding: ".7rem 2rem",
-    display: "flex",
-    alignItems: "center",
+    padding: '.7rem 2rem',
+    display: 'flex',
+    alignItems: 'center',
     // backgroundColor: cyan[700],
   },
   flex: {
     flexGrow: 1,
   },
   button: {
-    marginTop: "1rem",
-    width: "100%",
+    marginTop: '1rem',
+    width: '100%',
     backgroundColor: grey[200],
-    "&:hover": {
+    '&:hover': {
       backgroundColor: grey[300],
     },
   },
   icon: {
-    transition: "opacity 0.2s ease",
-    "&:hover": {
-      cursor: "pointer",
-      opacity: "0.8",
+    transition: 'opacity 0.2s ease',
+    '&:hover': {
+      cursor: 'pointer',
+      opacity: '0.8',
     },
   },
   input: {
-    width: "100%",
+    width: '100%',
     borderRadius: 6,
-    padding: ".5rem 2rem",
+    padding: '.5rem 2rem',
     boxShadow: theme.shadows[1],
     backgroundColor: cyan[100],
   },
   bottomActions: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  dropzone: {
+    height: '100%',
+  },
+  loadingBox: {
+    display: 'grid',
+    placeItems: 'center',
   },
 }));
 
@@ -76,10 +85,12 @@ const Column = ({
   field,
   boardId,
   color,
-  updateAction
+  updateAction,
+  droppableId,
+  isLoading,
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
   const classes = useStyles();
   const _handleClick = () => {
     setIsEdit(!isEdit);
@@ -89,7 +100,7 @@ const Column = ({
     e.preventDefault();
     const data = { field, name: value };
     addAction({ id: boardId, action: data });
-    setValue("");
+    setValue('');
     setIsEdit(false);
   };
   const _removeAction = (id) => {
@@ -97,7 +108,7 @@ const Column = ({
   };
 
   const _handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       _submit(e);
     }
   };
@@ -113,30 +124,47 @@ const Column = ({
         boxShadow: `2px 5px 25px -5px ${color}`,
       }}
     >
-      <Typography className={classes.title} align="center" variant="h4">
+      <Typography
+        className={'noselect ' + classes.title}
+        align="center"
+        variant="h4"
+      >
         {boardName}
       </Typography>
-      {actions.length
-        ? map(actions, ({ name, _id }) => (
-          <Action boardId={boardId} field={field} updateAction={updateAction} _removeAction={_removeAction} name={name} _id={_id} />
-        ))
-        : null}
-
-      {/* <Paper
-              className={classes.action}
+      <Droppable droppableId={droppableId}>
+        {(provided) => {
+          return (
+            <Box
+              className={classes.dropzone}
               component="div"
-              variant="elevation"
-              elevation={2}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
             >
-              <Typography variant="body2">{item.name}</Typography>
-              <div className={classes.flex} />
-              <HighlightOffIcon
-                color="error"
-                className={classes.icon}
-                fontSize="large"
-                onClick={() => _removeAction(item._id)}
-              />
-            </Paper> */}
+              {actions.length
+                ? map(actions, ({ name, _id }, idx) => (
+                  <Action
+                    key={idx}
+                    idx={idx}
+                    boardId={boardId}
+                    field={field}
+                    updateAction={updateAction}
+                    _removeAction={_removeAction}
+                    name={name}
+                    _id={_id}
+                  />
+                ))
+                : null}
+              {provided.placeholder}
+            </Box>
+          );
+        }}
+      </Droppable>
+
+      {/* {isLoading && (
+        <Box className={classes.loadingBox} component="div">
+          <CircularProgress color="primary" size={20} />
+        </Box>
+      )} */}
       {isEdit ? (
         <InputBase
           className={classes.input}
@@ -148,7 +176,7 @@ const Column = ({
       ) : null}
       {isEdit ? (
         <Box
-          className={classes.bottomActions + " spacing-horizontal-l"}
+          className={classes.bottomActions + ' spacing-horizontal-l'}
           component="div"
           m={1}
         >
@@ -161,8 +189,8 @@ const Column = ({
           <BackspaceIcon
             className={classes.icon}
             onClick={() => {
-              setIsEdit(false)
-              setValue('')
+              setIsEdit(false);
+              setValue('');
             }}
             color="error"
             fontSize="large"

@@ -1,5 +1,5 @@
 import React from "react";
-import { InputBase, Paper, makeStyles } from "@material-ui/core";
+import { InputBase, Paper, makeStyles, CircularProgress } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { boardApi } from "../../../../apis";
 import tokenConfig from "../../../../helpers/tokenConfig";
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateBoard = ({ token, handleAddRow }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
+  const [_loading, setLoading] = React.useState(false)
   const _handleChange = (e) => {
     setValue(e.target.value);
   };
@@ -40,6 +41,7 @@ const CreateBoard = ({ token, handleAddRow }) => {
   };
 
   const _handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     if (!value) {
       toast.warn("Board name is empty!");
@@ -52,7 +54,9 @@ const CreateBoard = ({ token, handleAddRow }) => {
       handleAddRow(data);
       setValue("");
       toast.success(message);
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       if (error.response.data.message) {
         toast.error(error.response.data.message);
       }
@@ -69,12 +73,14 @@ const CreateBoard = ({ token, handleAddRow }) => {
         onKeyDown={_handleKeyDown}
       />
       <div className={classes.flexGrow} />
-      <AddCircleIcon
-        className={classes.icon}
-        onClick={_handleSubmit}
-        color="primary"
-        fontSize="large"
-      />
+      {_loading ? <CircularProgress size={16} color="primary" /> :
+        <AddCircleIcon
+          className={classes.icon}
+          onClick={_handleSubmit}
+          color="primary"
+          fontSize="large"
+        />}
+
     </Paper>
   );
 };

@@ -5,7 +5,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import EmailIcon from "@material-ui/icons/Email";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { InputField } from "../../../../components";
-import { Button, Grid, Link, makeStyles, Typography } from "@material-ui/core";
+import { Button, Grid, Link, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { lightBlue } from "@material-ui/core/colors";
 import { toast } from 'react-toastify';
 
@@ -75,11 +75,15 @@ const ProfileForm = ({ changeProfile, user: { username, email } }) => {
         Icon={LockIcon}
         label="Confirm password"
       />
-      <Button size="large" color="primary" variant='outlined' type="submit">
-        <Typography variant="h6">
-          Submit
+      <Tooltip arrow title="If you login with social account, just type in your email again to confirm">
+        <Button size="large" color="primary" variant='outlined' type="submit">
+          <Typography variant="h6">
+            Submit
         </Typography>
-      </Button>
+        </Button>
+      </Tooltip>
+
+
     </form>
   )
 }

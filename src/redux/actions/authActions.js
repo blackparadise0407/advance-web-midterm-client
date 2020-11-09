@@ -122,3 +122,46 @@ export const logoutUser = () => (dispatch) => {
 export const clearMessage = () => (dispatch) => {
   dispatch({ type: CLEAR_AUTH_MESSAGE });
 };
+
+
+export const googleSignIn = ({ googleId, email, name }) => async dispatch => {
+  dispatch({ type: USER_LOADING });
+  try {
+    const body = JSON.stringify({ googleId, email, name })
+    const { message, data: { token } } = await authApi.googleSignIn(body)
+    dispatch({
+      type: LOGIN_SUCCESS, payload: {
+        msg: message,
+        token
+      }
+    });
+  } catch (error) {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: {
+        err: error.response.data.message || error,
+      },
+    });
+  }
+}
+
+export const facebookSignIn = ({ id, name }) => async dispatch => {
+  dispatch({ type: USER_LOADING });
+  try {
+    const body = JSON.stringify({ id, name })
+    const { message, data: { token } } = await authApi.facebookSignIn(body)
+    dispatch({
+      type: LOGIN_SUCCESS, payload: {
+        msg: message,
+        token
+      }
+    });
+  } catch (error) {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: {
+        err: error.response.data.message || error,
+      },
+    });
+  }
+}

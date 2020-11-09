@@ -10,6 +10,7 @@ import { authActions } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { lightBlue } from "@material-ui/core/colors";
 import { toast } from "react-toastify";
+import { Loader } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     boxShadow: `0px 5px 30px -2px ${lightBlue[200]}`,
     overflow: "hidden",
+    padding: "1rem 0",
     [theme.breakpoints.down("md")]: {
       padding: "4rem 0",
     },
@@ -25,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
     display: "grid",
     placeItems: "center",
   },
+  imageWrapper: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   image: {
     [theme.breakpoints.down("sm")]: {
       display: "none",
@@ -32,9 +41,11 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: 900,
-    textTransform: "uppercase",
+    fontSize: 30,
+    marginTop: theme.spacing(1),
+    textTransform: "capitalize",
     [theme.breakpoints.down("md")]: {
-      fontSize: 28,
+      fontSize: 26,
     },
   },
 }));
@@ -47,6 +58,9 @@ const LoginPage = (props) => {
     clearMessage,
     err,
     msg,
+    googleSignIn,
+    facebookSignIn,
+    authLoading
   } = props;
   const classes = useStyles();
   const history = useHistory();
@@ -77,10 +91,11 @@ const LoginPage = (props) => {
 
   return (
     <AuthLayout>
+      {authLoading && <Loader />}
       <Container maxWidth="md" className={"LoginPage " + classes.root}>
         <Grid className={classes.form} container>
           <Grid className={classes.image} item xs={12} md={6} spacing={2}>
-            <div className="image-wrapper">
+            <div className={classes.imageWrapper}>
               <img src={LoginImage} alt="" />
             </div>
           </Grid>
@@ -95,11 +110,15 @@ const LoginPage = (props) => {
               className={classes.title}
               align="center"
               color="primary"
-              variant="h2"
+              variant="body1"
             >
-              WELCOME BACK
+              welcome back
             </Typography>
-            <LoginForm loginUser={loginUser} />
+            <LoginForm
+              facebookSignIn={facebookSignIn}
+              googleSignIn={googleSignIn}
+              loginUser={loginUser}
+            />
           </Grid>
         </Grid>
       </Container>
@@ -111,12 +130,15 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   msg: state.auth.msg,
   err: state.auth.err,
+  authLoading: state.auth.isLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadUser: () => dispatch(authActions.loadUser()),
   loginUser: ({ email, password }) =>
     dispatch(authActions.login({ email, password })),
+  googleSignIn: (body) => dispatch(authActions.googleSignIn(body)),
+  facebookSignIn: (body) => dispatch(authActions.facebookSignIn(body)),
   clearMessage: () => dispatch(authActions.clearMessage()),
 });
 

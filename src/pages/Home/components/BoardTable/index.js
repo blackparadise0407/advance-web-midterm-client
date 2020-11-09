@@ -11,12 +11,13 @@ import {
   TableCell,
   Box,
 } from "@material-ui/core";
-import { map } from "lodash";
+import { map, times } from "lodash";
 import { boardApi } from "../../../../apis";
 import tokenConfig from "../../../../helpers/tokenConfig";
 import MyTableRow from "../MyTableRow";
 import { EmptyImage } from "../../../../constants";
 import { toast } from "react-toastify";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -72,7 +73,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const BoardTable = ({ rows = [], token, handleDeleteRow, handleUpdateRow }) => {
+const BoardTable = ({ isLoading, rows = [], token, handleDeleteRow, handleUpdateRow }) => {
   const classes = useStyles();
 
   const _handleDelete = async (id) => {
@@ -122,14 +123,14 @@ const BoardTable = ({ rows = [], token, handleDeleteRow, handleUpdateRow }) => {
                 )}
               </>
             ) : (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Box className={classes.imgWrapper} component="div">
-                    <img className={classes.img} src={EmptyImage} atl="" />
-                  </Box>
-                </TableCell>
-              </TableRow>
-            )}
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Box className={classes.imgWrapper} component="div">
+                      <img className={classes.img} src={EmptyImage} alt="" />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: 900,
+    textTransform: "capitalize",
     fontSize: 28,
     marginTop: theme.spacing(2),
     [theme.breakpoints.down("md")]: {
@@ -42,7 +43,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPage = (props) => {
-  const { loadUser, registerUser, isAuthenticated, err, msg } = props;
+  const {
+    loadUser,
+    registerUser,
+    isAuthenticated,
+    err,
+    msg,
+    isLoading,
+  } = props;
   const classes = useStyles();
   const history = useHistory();
 
@@ -58,7 +66,13 @@ const RegisterPage = (props) => {
 
   React.useEffect(() => {
     if (msg) {
-      toast.success(msg);
+      toast.success(msg + "\nRedirect to login after 5 seconds");
+      // setTimeout(() => {
+      //   history.push("/login");
+      // }, 5000);
+      // return () => {
+      //   clearTimeout();
+      // };
     }
     if (err) {
       if (err === "Unauthorized, no token provided") return;
@@ -86,11 +100,11 @@ const RegisterPage = (props) => {
               className={classes.title}
               align="center"
               color="primary"
-              variant="h2"
+              variant="body1"
             >
-              REGISTER
+              register now
             </Typography>
-            <RegisterForm registerUser={registerUser} />
+            <RegisterForm isLoading={isLoading} registerUser={registerUser} />
           </Grid>
         </Grid>
       </Container>
@@ -102,6 +116,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   msg: state.auth.msg,
   err: state.auth.err,
+  isLoading: state.auth.isLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

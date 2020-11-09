@@ -15,6 +15,8 @@ import { findIndex } from "lodash";
 import { blue } from "@material-ui/core/colors";
 
 import "./styles.scss";
+import { Skeleton } from "@material-ui/lab";
+import { Loader } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HomePage = (props) => {
-  const { loadUser, token, isAuthenticated, logoutUser, user } = props;
+  const { loadUser, token, isAuthenticated, logoutUser, user, boardLoading } = props;
   const history = useHistory();
   const [userBoard, setUserBoard] = React.useState({
     isLoading: false,
@@ -99,10 +101,11 @@ const HomePage = (props) => {
     _fetchUserBoard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loadUser]);
-  const { data } = userBoard;
+  const { data, isLoading } = userBoard;
   const classes = useStyles();
   return (
     <MainLayout user={user} logoutUser={logoutUser}>
+      {!isLoading ? <Loader /> : console.log('cac')}
       <div className="HomePage">
         <Container className={classes.container} maxWidth="lg">
           <Box component="div" className={classes.box}>
@@ -124,6 +127,7 @@ const mapStateToProps = (state) => ({
   token: state.auth.token,
   user: state.auth.user,
   isAuthenticated: state.auth.isAuthenticated,
+  boardLoading: state.board.isLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({
