@@ -7,7 +7,14 @@ import EmailIcon from "@material-ui/icons/Email";
 import { InputField } from "../../../../components";
 // import { registerSchema } from "../../../../helpers/validation";
 import "./styles.scss";
-import { Button, Grid, Link, makeStyles, Typography } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Link,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
 
 const inputProps = [
@@ -93,6 +100,7 @@ const RegisterForm = (props) => {
     handleChange,
     handleSubmit,
     handleBlur,
+    isLoading,
   } = props;
   const classes = useStyles();
   return (
@@ -111,9 +119,13 @@ const RegisterForm = (props) => {
         color="secondary"
         type="submit"
       >
-        <Typography className={classes.text} variant="h5">
-          Submit
-        </Typography>
+        {isLoading ? (
+          <CircularProgress color="primary" size={22} />
+        ) : (
+          <Typography className={classes.text} variant="h5">
+            Submit
+          </Typography>
+        )}
       </Button>
       <Grid container>
         <Grid item xs={12} sm={6}>

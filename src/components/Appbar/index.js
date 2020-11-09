@@ -46,16 +46,16 @@ const MyAppBar = ({ logoutUser, user }) => {
     <div className={classes.root}>
       <AppBar className={classes.appbar} color="secondary" position="static">
         <Toolbar>
-          <Link href="/">
+          <Link to="/">
             <Typography color="inherit" variant="h2" className={classes.title}>
               Retro Sprint
-          </Typography>
+            </Typography>
           </Link>
           <div className={classes.flexGrow} />
           <Typography variant="h6" className={classes.name}>
             {user && user.username}
           </Typography>
-          <IconButton onClick={logoutUser} >
+          <IconButton onClick={logoutUser}>
             <ExitToAppIcon className={classes.icon} />
           </IconButton>
         </Toolbar>

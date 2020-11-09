@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     boxShadow: `0px 5px 30px -2px ${lightBlue[200]}`,
     overflow: "hidden",
+    padding: "1rem 0",
     [theme.breakpoints.down("md")]: {
       padding: "4rem 0",
     },
@@ -27,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
   imageWrapper: {
     height: "100%",
-    display: 'flex',
+    display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   image: {
     [theme.breakpoints.down("sm")]: {
@@ -38,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    fontWeight: 700,
+    fontWeight: 900,
     fontSize: 30,
     marginTop: theme.spacing(1),
-    textTransform: "uppercase",
+    textTransform: "capitalize",
     [theme.breakpoints.down("md")]: {
       fontSize: 26,
     },
@@ -57,7 +58,7 @@ const LoginPage = (props) => {
     err,
     msg,
     googleSignIn,
-    facebookSignIn
+    facebookSignIn,
   } = props;
   const classes = useStyles();
   const history = useHistory();
@@ -91,7 +92,7 @@ const LoginPage = (props) => {
       <Container maxWidth="md" className={"LoginPage " + classes.root}>
         <Grid className={classes.form} container>
           <Grid className={classes.image} item xs={12} md={6} spacing={2}>
-            <div className={classes.imageWrapper} >
+            <div className={classes.imageWrapper}>
               <img src={LoginImage} alt="" />
             </div>
           </Grid>
@@ -108,9 +109,13 @@ const LoginPage = (props) => {
               color="primary"
               variant="body1"
             >
-              WELCOME BACK
+              welcome back
             </Typography>
-            <LoginForm facebookSignIn={facebookSignIn} googleSignIn={googleSignIn} loginUser={loginUser} />
+            <LoginForm
+              facebookSignIn={facebookSignIn}
+              googleSignIn={googleSignIn}
+              loginUser={loginUser}
+            />
           </Grid>
         </Grid>
       </Container>

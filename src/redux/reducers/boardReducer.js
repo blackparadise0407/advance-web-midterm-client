@@ -4,8 +4,9 @@ import {
   BOARD_LOADING,
   ADD_ACTION,
   DELETE_ACTION,
-  UPDATE_ACTION
-} from '../actions/types'
+  UPDATE_ACTION,
+  UPDATE_BOARD,
+} from "../actions/types";
 
 const initialState = {
   isLoading: false,
@@ -21,8 +22,9 @@ export default (state = initialState, action) => {
         ...state,
         msg: "",
         err: "",
-        isLoading: true
-      }
+        isLoading: true,
+      };
+    case UPDATE_BOARD:
     case BOARD_LOADED:
     case ADD_ACTION:
     case UPDATE_ACTION:
@@ -32,16 +34,16 @@ export default (state = initialState, action) => {
         data: action.payload.data,
         isLoading: false,
         msg: action.payload.message,
-      }
+      };
     }
     case BOARD_ERROR: {
       return {
         ...state,
         isLoading: false,
         err: action.payload,
-      }
+      };
     }
     default:
-      return { ...state }
+      return { ...state };
   }
-}
+};

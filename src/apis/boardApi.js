@@ -5,6 +5,7 @@ const boardApi = {
     const url = "/board";
     return axiosClient.get(url, config);
   },
+
   getByID: (id, config) => {
     const url = `/board/${id}`;
     return axiosClient.get(url, config);
@@ -32,7 +33,11 @@ const boardApi = {
   updateAction: (id, body, config) => {
     const url = `/board/${id}/update-action`;
     return axiosClient.post(url, body, config);
-  }
+  },
+  updateBoard: (id, body, config) => {
+    const url = `/board/${id}`;
+    return axiosClient.post(url, body, config);
+  },
 };
 
 export default boardApi;

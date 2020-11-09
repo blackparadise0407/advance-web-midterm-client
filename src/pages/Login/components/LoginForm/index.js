@@ -6,8 +6,8 @@ import EmailIcon from "@material-ui/icons/Email";
 import { Button, Grid, Link, makeStyles, Typography } from "@material-ui/core";
 import { lightBlue } from "@material-ui/core/colors";
 import GoogleLogin from "react-google-login";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import clsx from 'clsx'
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import clsx from "clsx";
 
 import { InputField } from "../../../../components";
 import { GoogleSvg, FacebookSvg } from "../../../../constants";
@@ -55,7 +55,7 @@ const _renderInput = (props) => {
   } else return null;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     padding: "1rem 2rem",
     marginTop: "3rem",
@@ -81,36 +81,34 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       opacity: "0.8",
       "& $buttonText": {
-        color: "#fff"
-      }
-    }
-
+        color: "#fff",
+      },
+    },
   },
   facebook: {
     boxShadow: "0px 2px 15px -4px #bccbf5",
     "&:hover": {
-      backgroundColor: "#3C5898"
-    }
+      backgroundColor: "#3C5898",
+    },
   },
   google: {
     boxShadow: "0px 2px 15px -4px #f5b9b5",
     "&:hover": {
-      backgroundColor: "#F65312"
-    }
+      backgroundColor: "#F65312",
+    },
   },
   buttonText: {
-    textTransform: 'initial',
+    textTransform: "initial",
     color: "#000",
     fontWeight: 500,
     transition: "color 0.2s ease",
   },
   svg: {
-    marginRight: '1rem',
-    width: '2.6rem',
-    height: '2.6rem',
-  }
+    marginRight: "1rem",
+    width: "2.6rem",
+    height: "2.6rem",
+  },
 }));
-
 
 const LoginForm = (props) => {
   const {
@@ -121,21 +119,22 @@ const LoginForm = (props) => {
     handleSubmit,
     handleBlur,
     googleSignIn,
-    facebookSignIn
+    facebookSignIn,
   } = props;
   const classes = useStyles();
 
-  const responseGoogle = ({ profileObj: { email, googleId, name } }) => {
-    googleSignIn({ email, googleId, name })
-  }
+  const _responseGoogle = ({ profileObj: { email, googleId, name } }) => {
+    googleSignIn({ email, googleId, name });
+  };
 
-  const failGoogle = () => {
-    console.log('FAILED');
-  }
+  const _failGoogle = (err) => {
+    console.log("VCL");
+    console.log(err);
+  };
 
   const responseFacebook = ({ name, id }) => {
-    facebookSignIn({ id, name })
-  }
+    facebookSignIn({ id, name });
+  };
 
   return (
     <form onSubmit={handleSubmit} className="LoginForm spacing-vertical-l">
@@ -158,50 +157,64 @@ const LoginForm = (props) => {
         </Typography>
       </Button>
       <Grid container>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6}>
           <Link href="/" color="error" underline="none">
             <Typography align="left" variant="body1">
               Back to home page
             </Typography>
           </Link>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6}>
           <Link href="/register" color="error" underline="none">
             <Typography align="right" variant="body1">
               Register here
             </Typography>
           </Link>
         </Grid>
-        <Typography className="divider" type='body1'>OR</Typography>
-        <GoogleLogin
-          clientId="388165780875-depk0657p2fkgbdi2e7rnjvcrueocfqd.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={failGoogle}
-          cookiePolicy={'single_host_origin'}
-          render={renderProps => (
-            <Button onClick={renderProps.onClick} className={clsx(classes.socialLogin, classes.google)}>
-              <img className={classes.svg} src={GoogleSvg} alt="" />
-              <Typography className={classes.buttonText} variant="body1">Sign in with google</Typography>
-            </Button>
-          )}
-        />
-        <FacebookLogin
-          appId="274806887289221"
-          autoLoad={true}
-          fields="name,email,picture"
-          onClick={
-            () => console.log('Click')
-          }
-          callback={responseFacebook}
-          render={renderProps => (
-            <Button onClick={renderProps.onClick} className={clsx(classes.socialLogin, classes.facebook)}>
-              <img className={classes.svg} src={FacebookSvg} alt="" />
-              <Typography className={classes.buttonText} variant="body1">Sign in with facebook</Typography>
-            </Button>
-          )}
-        />
       </Grid>
+      <Typography className="divider" type="body1">
+        OR
+      </Typography>
+      <GoogleLogin
+        clientId="388165780875-depk0657p2fkgbdi2e7rnjvcrueocfqd.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={_responseGoogle}
+        onFailure={_failGoogle}
+        onClick={() => console.log("google clicked")}
+        cookiePolicy={"single_host_origin"}
+        render={(renderProps) => (
+          <Button
+            // type="button"
+            onClick={renderProps.onClick}
+            className={clsx(classes.socialLogin, classes.google)}
+          >
+            <img className={classes.svg} src={GoogleSvg} alt="" />
+            <Typography className={classes.buttonText} variant="body1">
+              Sign in with google
+            </Typography>
+          </Button>
+        )}
+      />
+      <FacebookLogin
+        appId="274806887289221"
+        autoLoad={true}
+        fields="name,email,picture"
+        // onClick={() => console.log("facebook click")}
+        // onFailure={() => console.log("FAILED")}
+        // callback={responseFacebook}
+        render={(renderProps) => (
+          <Button
+            // type="button"
+            // onClick={renderProps.onClick}
+            className={clsx(classes.socialLogin, classes.facebook)}
+          >
+            <img className={classes.svg} src={FacebookSvg} alt="" />
+            <Typography className={classes.buttonText} variant="body1">
+              Sign in with facebook
+            </Typography>
+          </Button>
+        )}
+      />
     </form>
   );
 };

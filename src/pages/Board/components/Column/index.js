@@ -14,6 +14,7 @@ import { blue, cyan, grey } from "@material-ui/core/colors";
 import SendIcon from "@material-ui/icons/Send";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import Action from "../Action";
+import { Droppable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-end",
   },
+  dropzone: {
+    height: "100%",
+  },
 }));
 
 const Column = ({
@@ -76,7 +80,11 @@ const Column = ({
   field,
   boardId,
   color,
-  updateAction
+  updateAction,
+  droppableId,
+  // ref,
+  // provided,
+  // droppableId,
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -116,11 +124,34 @@ const Column = ({
       <Typography className={classes.title} align="center" variant="h4">
         {boardName}
       </Typography>
-      {actions.length
-        ? map(actions, ({ name, _id }) => (
-          <Action boardId={boardId} field={field} updateAction={updateAction} _removeAction={_removeAction} name={name} _id={_id} />
-        ))
-        : null}
+      <Droppable droppableId={droppableId}>
+        {(provided, snapshot) => {
+          return (
+            <Box
+              className={classes.dropzone}
+              component="div"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {actions.length
+                ? map(actions, ({ name, _id }, idx) => (
+                    <Action
+                      key={idx}
+                      idx={idx}
+                      boardId={boardId}
+                      field={field}
+                      updateAction={updateAction}
+                      _removeAction={_removeAction}
+                      name={name}
+                      _id={_id}
+                    />
+                  ))
+                : null}
+              {provided.placeholder}
+            </Box>
+          );
+        }}
+      </Droppable>
 
       {/* <Paper
               className={classes.action}
@@ -161,22 +192,22 @@ const Column = ({
           <BackspaceIcon
             className={classes.icon}
             onClick={() => {
-              setIsEdit(false)
-              setValue('')
+              setIsEdit(false);
+              setValue("");
             }}
             color="error"
             fontSize="large"
           />
         </Box>
       ) : (
-          <Button
-            onClick={_handleClick}
-            variant="contained"
-            className={classes.button}
-          >
-            <AddIcon fontSize="large" />
-          </Button>
-        )}
+        <Button
+          onClick={_handleClick}
+          variant="contained"
+          className={classes.button}
+        >
+          <AddIcon fontSize="large" />
+        </Button>
+      )}
     </Paper>
   );
 };
