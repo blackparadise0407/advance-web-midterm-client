@@ -199,13 +199,13 @@ const LoginForm = (props) => {
         appId="274806887289221"
         autoLoad={true}
         fields="name,email,picture"
-        // onClick={() => console.log("facebook click")}
-        // onFailure={() => console.log("FAILED")}
-        // callback={responseFacebook}
+        onClick={() => console.log("facebook click")}
+        onFailure={() => console.log("FAILED")}
+        callback={responseFacebook}
         render={(renderProps) => (
           <Button
-            // type="button"
-            // onClick={renderProps.onClick}
+            type="button"
+            onClick={renderProps.onClick}
             className={clsx(classes.socialLogin, classes.facebook)}
           >
             <img className={classes.svg} src={FacebookSvg} alt="" />

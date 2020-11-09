@@ -103,7 +103,18 @@ export const updateBoard = ({ id, body }) => async (dispatch, getState) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    // dispatch({ type: BOARD_ERROR, err: error.response.data.message || error });
+    dispatch({ type: BOARD_ERROR, err: error.response.data.message || error });
   }
 };
+
+
+export const realTimeUpdate = (data) => dispatch => {
+  dispatch({ type: BOARD_LOADING });
+  dispatch({
+    type: UPDATE_BOARD,
+    payload: {
+      data,
+      message: 'Updated'
+    },
+  })
+}

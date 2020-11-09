@@ -10,6 +10,7 @@ import { authActions } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { lightBlue } from "@material-ui/core/colors";
 import { toast } from "react-toastify";
+import { Loader } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -59,6 +60,7 @@ const LoginPage = (props) => {
     msg,
     googleSignIn,
     facebookSignIn,
+    authLoading
   } = props;
   const classes = useStyles();
   const history = useHistory();
@@ -89,6 +91,7 @@ const LoginPage = (props) => {
 
   return (
     <AuthLayout>
+      {authLoading && <Loader />}
       <Container maxWidth="md" className={"LoginPage " + classes.root}>
         <Grid className={classes.form} container>
           <Grid className={classes.image} item xs={12} md={6} spacing={2}>
@@ -127,6 +130,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   msg: state.auth.msg,
   err: state.auth.err,
+  authLoading: state.auth.isLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({

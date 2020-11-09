@@ -8,7 +8,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   action: {
-    padding: ".7rem 2rem",
+    padding: ".8rem 2rem",
     display: "flex",
     alignItems: "center",
     marginBottom: theme.spacing(1),
@@ -72,10 +72,10 @@ const Action = ({
                 onChange={_handleChange}
               />
             ) : (
-              <Typography className={classes.text} variant="body1">
-                {name}
-              </Typography>
-            )}
+                <Typography className={classes.text} variant="body1">
+                  {name}
+                </Typography>
+              )}
             <div className={classes.flex} />
             {isEdit ? (
               <React.Fragment>
@@ -93,21 +93,21 @@ const Action = ({
                 />
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                <EditIcon
-                  color="primary"
-                  className={classes.icon}
-                  fontSize="large"
-                  onClick={() => setIsEdit(true)}
-                />
-                <HighlightOffIcon
-                  color="error"
-                  className={classes.icon}
-                  fontSize="large"
-                  onClick={() => _removeAction(_id)}
-                />
-              </React.Fragment>
-            )}
+                <React.Fragment>
+                  <EditIcon
+                    color="primary"
+                    className={classes.icon}
+                    fontSize="large"
+                    onClick={() => setIsEdit(true)}
+                  />
+                  <HighlightOffIcon
+                    color="error"
+                    className={classes.icon}
+                    fontSize="large"
+                    onClick={() => _removeAction(_id)}
+                  />
+                </React.Fragment>
+              )}
           </Paper>
         );
       }}
