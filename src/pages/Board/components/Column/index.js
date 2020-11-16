@@ -6,9 +6,8 @@ import {
   Paper,
   Typography,
   InputBase,
-  CircularProgress,
+  IconButton,
 } from '@material-ui/core';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddIcon from '@material-ui/icons/Add';
 import { map } from 'lodash';
 import { blue, cyan, grey } from '@material-ui/core/colors';
@@ -16,6 +15,7 @@ import SendIcon from '@material-ui/icons/Send';
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import Action from '../Action';
 import { Droppable } from 'react-beautiful-dnd';
+import useOnClickOutside from '../../../../hooks/useOnClickOutside';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: '0.8',
     },
   },
+  iconButton: {
+    boxShadow: theme.shadows[10]
+  },
   input: {
     width: '100%',
     borderRadius: 6,
@@ -66,7 +69,10 @@ const useStyles = makeStyles((theme) => ({
   },
   bottomActions: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    "&>*+*": {
+      margin: theme.spacing(0, 2)
+    },
   },
   dropzone: {
     height: '100%',
@@ -89,9 +95,12 @@ const Column = ({
   droppableId,
   isLoading,
 }) => {
+  const editEl = React.useRef(null);
   const [isEdit, setIsEdit] = React.useState(false);
   const [value, setValue] = React.useState('');
+  useOnClickOutside(editEl, () => { setIsEdit(false) })
   const classes = useStyles();
+
   const _handleClick = () => {
     setIsEdit(!isEdit);
   };
@@ -112,6 +121,7 @@ const Column = ({
       _submit(e);
     }
   };
+
   return (
     <Paper
       component="div"
@@ -165,46 +175,59 @@ const Column = ({
           <CircularProgress color="primary" size={20} />
         </Box>
       )} */}
-      {isEdit ? (
-        <InputBase
-          className={classes.input}
-          onChange={_handleChange}
-          value={value}
-          placeholder="Action name ..."
-          onKeyDown={_handleKeyDown}
-        />
-      ) : null}
-      {isEdit ? (
-        <Box
-          className={classes.bottomActions + ' spacing-horizontal-l'}
-          component="div"
-          m={1}
-        >
-          <SendIcon
-            className={classes.icon}
-            color="action"
-            fontSize="large"
-            onClick={_submit}
+      <div
+        ref={editEl}
+
+      >
+        {isEdit ? (
+          <InputBase
+            className={classes.input}
+            onChange={_handleChange}
+            value={value}
+            placeholder="Action name ..."
+            onKeyDown={_handleKeyDown}
           />
-          <BackspaceIcon
-            className={classes.icon}
-            onClick={() => {
-              setIsEdit(false);
-              setValue('');
-            }}
-            color="error"
-            fontSize="large"
-          />
-        </Box>
-      ) : (
-          <Button
-            onClick={_handleClick}
-            variant="contained"
-            className={classes.button}
+        ) : null}
+        {isEdit ? (
+          <Box
+            // ref={editEl}
+            className={classes.bottomActions + ' spacing-horizontal-l'}
+            component="div"
+            m={1}
           >
-            <AddIcon fontSize="large" />
-          </Button>
-        )}
+            <IconButton className={classes.iconButton}
+              onClick={_submit}
+            >
+              <SendIcon
+                className={classes.icon}
+                color="action"
+                fontSize="large"
+              />
+            </IconButton>
+            <IconButton className={classes.iconButton}
+              onClick={() => {
+                setIsEdit(false);
+                setValue('');
+              }}
+            >
+              <BackspaceIcon
+                className={classes.icon}
+                color="error"
+                fontSize="large"
+              />
+            </IconButton>
+
+          </Box>
+        ) : (
+            <Button
+              onClick={_handleClick}
+              variant="contained"
+              className={classes.button}
+            >
+              <AddIcon fontSize="large" />
+            </Button>
+          )}
+      </div>
     </Paper>
   );
 };

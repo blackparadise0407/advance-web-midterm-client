@@ -103,7 +103,6 @@ const MyTableRow = ({
   const _handleKeyDown = (e, id) => {
     if (e.key === "Enter") {
       _handleSubmit(e, id);
-      console.log("ez");
     }
   };
   const _handleSubmit = async (e, id) => {

@@ -89,7 +89,6 @@ const HomePage = (props) => {
       row
     );
     setUserBoard(newUserBoard);
-    console.log(newUserBoard);
   };
 
   React.useEffect(() => {
@@ -100,11 +99,11 @@ const HomePage = (props) => {
     _fetchUserBoard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loadUser]);
+  // eslint-disable-next-line no-unused-vars
   const { data, isLoading } = userBoard;
   const classes = useStyles();
   return (
     <MainLayout user={user} logoutUser={logoutUser}>
-      {!isLoading ? <Loader /> : console.log('cac')}
       <div className="HomePage">
         <Container className={classes.container} maxWidth="lg">
           <Box component="div" className={classes.box}>

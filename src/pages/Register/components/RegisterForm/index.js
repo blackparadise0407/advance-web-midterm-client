@@ -122,10 +122,10 @@ const RegisterForm = (props) => {
         {isLoading ? (
           <CircularProgress color="primary" size={22} />
         ) : (
-          <Typography className={classes.text} variant="h5">
-            Submit
-          </Typography>
-        )}
+            <Typography className={classes.text} variant="h5">
+              Submit
+            </Typography>
+          )}
       </Button>
       <Grid container>
         <Grid item xs={12} sm={6}>
@@ -156,7 +156,6 @@ const EnhancedRegister = withFormik({
   }),
   // validationSchema: registerSchema,
   handleSubmit: ({ username, email, password }, { props }) => {
-    console.log(username, email, password);
     props.registerUser({ username, email, password });
   },
 })(RegisterForm);

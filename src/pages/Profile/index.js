@@ -12,7 +12,8 @@ import "./styles.scss";
 const useStyles = makeStyles(theme => ({
   container: {
     maxWidth: "50rem",
-    height: "100%"
+    height: "100%",
+    paddingTop: theme.spacing(5)
   }
 }))
 
@@ -44,11 +45,13 @@ const Profile = (props) => {
 
     <MainLayout user={user} logoutUser={logoutUser}>
       <div className="ProfilePage">
-        <Box component="div" className={classes.container} maxWidth="md">
-          {user ?
-            <ProfileForm changeProfile={changeProfile} user={user} /> : null
-          }
-        </Box>
+        <Container className={classes.container} maxWidth="md">
+          <Box component="div">
+            {user ?
+              <ProfileForm changeProfile={changeProfile} user={user} /> : null
+            }
+          </Box>
+        </Container>
       </div>
     </MainLayout>
   );

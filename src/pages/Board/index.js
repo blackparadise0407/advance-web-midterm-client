@@ -1,5 +1,6 @@
-import { Box, Grid, IconButton, makeStyles, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { Box, Grid, IconButton, Input, InputAdornment, makeStyles, Paper, TextField, Tooltip, Typography, withStyles } from "@material-ui/core";
+import clsx from 'clsx'
 import { connect } from "react-redux";
 import { pullAt, map } from "lodash";
 import Column from "./components/Column";
@@ -8,6 +9,9 @@ import { lightBlue, lightGreen, orange, grey } from "@material-ui/core/colors";
 import { DragDropContext } from "react-beautiful-dnd";
 import { FacebookShareButton } from "react-share";
 import ShareIcon from '@material-ui/icons/Share';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+
 import { authActions, boardActions } from "../../redux/actions";
 import { MainLayout } from "../../layouts";
 import pusher from "../../helpers/pusher";
@@ -33,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     color: '#fff',
+    cursor: 'pointer'
   },
   paper: {
     padding: theme.spacing(3, 2),
@@ -41,6 +46,18 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "40rem",
     margin: "0 auto",
   },
+  iconCopied: {
+    color: `${lightGreen[500]} !important`,
+  },
+  copyInput: {
+    color: 'white',
+  },
+  actionButton: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: 'center'
+  }
 }));
 
 const _renderColumn = ({
@@ -75,6 +92,13 @@ const _renderColumn = ({
   } else return null;
 };
 
+const CustomizedTooltip = withStyles({
+  tooltip: {
+    fontSize: 16,
+    color: "white",
+  }
+})(Tooltip)
+
 const BoardPage = (props) => {
   const {
     match: { params },
@@ -93,6 +117,10 @@ const BoardPage = (props) => {
   } = props;
   const history = useHistory();
 
+  const copyRef = React.useRef(null)
+
+  const [isCopied, setIsCopied] = React.useState(false)
+
   React.useEffect(() => {
     if (!isAuthenticated) {
       history.push("/login");
@@ -104,7 +132,6 @@ const BoardPage = (props) => {
   React.useEffect(() => {
     const channel = pusher.subscribe(`${params.id}`);
     channel.bind('update', ({ message, data }) => {
-      console.log('PUSHER', data);
       realTimeUpdate(data)
     });
   }, [params.id, realTimeUpdate])
@@ -138,6 +165,7 @@ const BoardPage = (props) => {
       }
     }
   };
+
   const classes = useStyles();
 
   const _handleDragEnd = ({ destination, source }) => {
@@ -146,7 +174,6 @@ const BoardPage = (props) => {
     }
     const { index: dIdx, droppableId: dId } = destination;
     const { index: sIdx, droppableId: sId } = source;
-    // console.log(destination);
 
     if (dIdx === sIdx && dId === sId) {
       return;
@@ -170,25 +197,55 @@ const BoardPage = (props) => {
     }
   };
 
+  const copyToClipboard = (e) => {
+    navigator.clipboard.writeText(copyRef.current.value)
+    setIsCopied(true)
+  };
+
   return (
     <MainLayout user={user} logoutUser={logoutUser}>
       <div className={"BoardPage " + classes.box}>
         <Box component="div">
           <Paper className={classes.paper} elevation={3}>
+            <div style={{ display: "none" }} ref={copyRef}>{window.location.href}</div>
             <Typography className={'noselect ' + classes.title} align="center" variant="h2">
               {board.data && board.data.name}
-              <FacebookShareButton
-                children={
-                  <IconButton className={classes.iconButton}>
-                    <ShareIcon fontSize="large" className={classes.icon} />
-                  </IconButton>
-                }
-                // url='http://example.com/board'
-                quote="Come and have some fun together"
-                hashtag="#retrosprint"
-                url={window.location.href}
-              />
             </Typography>
+            <Box className={classes.actionButton}>
+
+              <CustomizedTooltip placement="left" title="Share to facebook">
+                <FacebookShareButton
+                  className={classes.iconButton}
+                  children={
+                    <ShareIcon fontSize="large" className={classes.icon} />
+                  }
+                  // url='http://example.com/board'
+                  quote="Come and have some fun together"
+                  hashtag="#retrosprint"
+                  url={window.location.href}
+                />
+              </CustomizedTooltip>
+              <TextField
+                id="input-with-icon-textfield"
+                label="Share link"
+                variant="outlined"
+                value={window.location.href}
+                // className={classes.copyInput}
+                inputRef={copyRef}
+                InputProps={{
+                  className: classes.copyInput,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CustomizedTooltip placement="bottom" title={!isCopied ? "Copy to clipboard" : "Copied!"}>
+                        {!isCopied ? <AssignmentIcon onClick={copyToClipboard} className={classes.icon} fontSize="large" /> : <AssignmentTurnedInIcon className={clsx(classes.icon, classes.iconCopied)} fontSize="large" />}
+                      </CustomizedTooltip>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+
+
           </Paper>
           <DragDropContext onDragEnd={_handleDragEnd}>
             <Grid className={classes.container} container spacing={8}>

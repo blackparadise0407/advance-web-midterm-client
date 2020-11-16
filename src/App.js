@@ -3,10 +3,11 @@ import { ThemeProvider } from "@material-ui/core";
 import { map } from "lodash";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import theme from "./assets/theme/theme";
 import { Loader } from "./components";
 import NotFound from "./pages/NotFound";
+import history from "./helpers/history";
 const HomePage = React.lazy(async () => await import("./pages/Home"));
 const RegisterPage = React.lazy(async () => await import("./pages/Register"));
 const BoardPage = React.lazy(async () => await import("./pages/Board"));
@@ -57,7 +58,7 @@ const _renderPages = (pages) => {
           exact={page.isExact}
           path={page.path}
           component={page.component}
-          // render={() => <page.component />}
+        // render={() => <page.component />}
         />
       ))}
     </>
@@ -66,18 +67,13 @@ const _renderPages = (pages) => {
 
 const App = () => {
   return (
-    <Router>
+    <Router history={history}>
       <ThemeProvider theme={theme}>
         <Switch>
           <React.Suspense fallback={<Loader isLoading={true} />}>
             {_renderPages(pages)}
           </React.Suspense>
           <Route path="*" component={NotFound} />
-          {/* <React.Suspense fallback={<Loader isLoading={true} />}>
-          </React.Suspense> */}
-          {/* <React.Suspense fallback={<Loader isLoading={true} />}>
-            <Route path={page.path} render={() => <page.component />} />
-          </React.Suspense> */}
         </Switch>
         <ToastContainer
           position="top-right"

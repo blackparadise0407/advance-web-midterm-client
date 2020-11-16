@@ -1,11 +1,13 @@
 import React from "react";
 import { InputBase, makeStyles, Paper, Typography } from "@material-ui/core";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import clsx from 'clsx'
 import EditIcon from "@material-ui/icons/Edit";
 import BlockRoundedIcon from "@material-ui/icons/BlockRounded";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { Draggable } from "react-beautiful-dnd";
+// import { clearMessage } from "../../../../redux/actions/authActions";
+import { lightGreen } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   action: {
@@ -13,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     marginBottom: theme.spacing(1),
+  },
+  isDragging: {
+    boxShadow: theme.shadows[20],
+    background: lightGreen[400]
+  },
+  textDragging: {
+    color: '#fff',
   },
   flex: {
     flexGrow: 1,
@@ -26,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     fontWeight: 600,
+    transition: 'color ease 0.2s'
   },
 }));
 
@@ -47,21 +57,23 @@ const Action = ({
 
   const _handleUpdate = (e) => {
     e.preventDefault();
-    console.log(field);
     if (!value) return;
-    console.log({ boardId });
     updateAction({ id: boardId, action: { field, name: value, _id } });
     setIsEdit(false);
   };
   return (
     <Draggable key={_id} index={idx} draggableId={_id}>
-      {(provided) => {
+      {(provided, snapshot) => {
         return (
           <Paper
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            className={classes.action}
+            className={clsx({
+              [classes.action]: true,
+              [classes.isDragging]: snapshot.isDragging
+            })
+            }
             component="div"
             variant="elevation"
             elevation={2}
@@ -73,7 +85,13 @@ const Action = ({
                 onChange={_handleChange}
               />
             ) : (
-                <Typography className={classes.text} variant="body1">
+                <Typography
+                  className={clsx({
+                    [classes.text]: true,
+                    [classes.textDragging]: snapshot.isDragging
+                  })
+                  }
+                  variant="body1">
                   {name}
                 </Typography>
               )}
@@ -112,7 +130,7 @@ const Action = ({
           </Paper>
         );
       }}
-    </Draggable>
+    </Draggable >
   );
 };
 

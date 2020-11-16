@@ -128,8 +128,6 @@ const LoginForm = (props) => {
   };
 
   const _failGoogle = (err) => {
-    console.log("VCL");
-    console.log(err);
   };
 
   const responseFacebook = ({ name, id }) => {
@@ -180,7 +178,7 @@ const LoginForm = (props) => {
         buttonText="Login"
         onSuccess={_responseGoogle}
         onFailure={_failGoogle}
-        onClick={() => console.log("google clicked")}
+        // onClick={() => console.log("google clicked")}
         cookiePolicy={"single_host_origin"}
         render={(renderProps) => (
           <Button
@@ -199,8 +197,8 @@ const LoginForm = (props) => {
         appId="274806887289221"
         autoLoad={true}
         fields="name,email,picture"
-        onClick={() => console.log("facebook click")}
-        onFailure={() => console.log("FAILED")}
+        // onClick={() => console.log("facebook click")}
+        // onFailure={() => console.log("FAILED")}
         callback={responseFacebook}
         render={(renderProps) => (
           <Button
