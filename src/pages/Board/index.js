@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, IconButton, Input, InputAdornment, makeStyles, Paper, TextField, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Box, CircularProgress, Grid, IconButton, Input, InputAdornment, LinearProgress, makeStyles, Paper, TextField, Tooltip, Typography, withStyles } from "@material-ui/core";
 import clsx from 'clsx'
 import { connect } from "react-redux";
 import { pullAt, map } from "lodash";
@@ -57,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: "center",
     justifyContent: 'center'
+  },
+  loader: {
+    position: 'fixed',
+    top: '10px',
+    left: '10px',
+    color: 'white'
   }
 }));
 
@@ -247,6 +253,7 @@ const BoardPage = (props) => {
 
 
           </Paper>
+          {boardLoading && <CircularProgress className={classes.loader} size={40} />}
           <DragDropContext onDragEnd={_handleDragEnd}>
             <Grid className={classes.container} container spacing={8}>
               {_renderColumn({

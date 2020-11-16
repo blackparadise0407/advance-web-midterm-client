@@ -99,12 +99,13 @@ const HomePage = (props) => {
     _fetchUserBoard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loadUser]);
-  // eslint-disable-next-line no-unused-vars
   const { data, isLoading } = userBoard;
   const classes = useStyles();
+  console.log(isLoading);
   return (
     <MainLayout user={user} logoutUser={logoutUser}>
       <div className="HomePage">
+        {isLoading ? 'Loading, please wait...' : null}
         <Container className={classes.container} maxWidth="lg">
           <Box component="div" className={classes.box}>
             <CreateBoard token={token} handleAddRow={_handleAddRow} />
