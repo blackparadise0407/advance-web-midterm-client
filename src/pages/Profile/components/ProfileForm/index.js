@@ -1,12 +1,9 @@
 import React from 'react'
-import { withFormik } from 'formik'
-import { map } from "lodash";
 import LockIcon from "@material-ui/icons/Lock";
 import EmailIcon from "@material-ui/icons/Email";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { InputField } from "../../../../components";
-import { Box, Button, Grid, Link, makeStyles, Tooltip, Typography } from "@material-ui/core";
-import { lightBlue } from "@material-ui/core/colors";
+import { Box, Button, makeStyles, Tooltip } from "@material-ui/core";
 import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(theme => ({

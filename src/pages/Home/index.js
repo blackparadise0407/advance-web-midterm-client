@@ -15,7 +15,6 @@ import { findIndex } from "lodash";
 import { blue } from "@material-ui/core/colors";
 
 import "./styles.scss";
-import { Loader } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
   container: {

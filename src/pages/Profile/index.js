@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { MainLayout } from "../../layouts";
 import { authActions } from "../../redux/actions";
-import { lightBlue } from "@material-ui/core/colors";
 import { toast } from "react-toastify";
 import ProfileForm from './components/ProfileForm'
 import "./styles.scss";

@@ -12,7 +12,6 @@ import {
   UPDATE_FAIL,
 } from "./types";
 import { authApi } from "../../apis";
-import history from "../../helpers/history";
 
 export const tokenConfig = (getState) => {
   const token = getState().auth.token || localStorage.getItem("token");
