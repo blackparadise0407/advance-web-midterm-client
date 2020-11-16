@@ -15,7 +15,6 @@ import { findIndex } from "lodash";
 import { blue } from "@material-ui/core/colors";
 
 import "./styles.scss";
-import { Skeleton } from "@material-ui/lab";
 import { Loader } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HomePage = (props) => {
-  const { loadUser, token, isAuthenticated, logoutUser, user, boardLoading } = props;
+  const { loadUser, token, isAuthenticated, logoutUser, user } = props;
   const history = useHistory();
   const [userBoard, setUserBoard] = React.useState({
     isLoading: false,

@@ -4,6 +4,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import EditIcon from "@material-ui/icons/Edit";
 import BlockRoundedIcon from "@material-ui/icons/BlockRounded";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +101,7 @@ const Action = ({
                     fontSize="large"
                     onClick={() => setIsEdit(true)}
                   />
-                  <HighlightOffIcon
+                  <DeleteForeverIcon
                     color="error"
                     className={classes.icon}
                     fontSize="large"

@@ -11,13 +11,12 @@ import {
   TableCell,
   Box,
 } from "@material-ui/core";
-import { map, times } from "lodash";
+import { map } from "lodash";
 import { boardApi } from "../../../../apis";
 import tokenConfig from "../../../../helpers/tokenConfig";
 import MyTableRow from "../MyTableRow";
 import { EmptyImage } from "../../../../constants";
 import { toast } from "react-toastify";
-import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   table: {

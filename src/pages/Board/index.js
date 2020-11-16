@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { pullAt, map } from "lodash";
 import Column from "./components/Column";
 import { useHistory } from "react-router-dom";
-import { lightBlue, lightGreen, orange, blue, grey } from "@material-ui/core/colors";
+import { lightBlue, lightGreen, orange, grey } from "@material-ui/core/colors";
 import { DragDropContext } from "react-beautiful-dnd";
 import { FacebookShareButton } from "react-share";
 import ShareIcon from '@material-ui/icons/Share';
